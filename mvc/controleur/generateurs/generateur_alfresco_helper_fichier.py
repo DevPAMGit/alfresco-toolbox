@@ -1,7 +1,8 @@
 import codecs
 
 
-class GenerateurFichierControleur:
+# Classe permettant de générer le fichier java AlfrescoModeleHelper.
+class GenerateurAlfrescoHelperFichier:
 
     # Intialise une nouvelle instance de la classe 'GenerateurFichierControleur'.
     # modele Le modele de controleur.
@@ -9,7 +10,6 @@ class GenerateurFichierControleur:
     def __init__(self, modele, vue):
         self.modele = modele
         self.vue = vue
-        # self.fd = open(self.modele.get_chemin_helper() + "/AlfrescoHelper.java", "w",  "utf-8")
         self.fd = codecs.open(self.modele.get_chemin_helper() + "/AlfrescoHelper.java", "w", "utf-8")
 
     # Méthode permetant de créer la classe/fichier 'AlfrescoHelper'.
@@ -166,7 +166,7 @@ class GenerateurFichierControleur:
             "\t/** Permet de récupérer le nœud parent au noeud mis en paramètre. \n"
             "\t* @param noeud Le noeud dont on souhaite récupérer le parent. \n"
             "\t* @return Une instance de type {@link NodeRef} représentant le parent du nœud parent. */ \n"
-            "\tprotected NodeRef obtenirNoeudParent(NodeRef noeud){ \n"
+            "\tprotected NodeRef getNoeudParent(NodeRef noeud){ \n"
             "\t\treturn this.serviceNoeud.getPrimaryParent(noeud).getParentRef(); \n"
             "\t}\n\n"
 
@@ -177,7 +177,7 @@ class GenerateurFichierControleur:
             "\tprotected NodeRef obtenirAncetre(NodeRef noeud, int generation) {\n"
             "\t\tNodeRef ancetre = noeud;\n"
             "\t\tfor (int i=0; i<generation; i++) \n"
-            "\t\t\tancetre = this.obtenirNoeudParent(ancetre);\n"
+            "\t\t\tancetre = this.getNoeudParent(ancetre);\n"
             "\t\treturn ancetre;\n"
             "\t}\n\n"
         )
