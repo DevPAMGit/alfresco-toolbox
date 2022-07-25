@@ -65,10 +65,10 @@ class Modele:
         self.CHEMIN_PLATFORME = self.CHEMIN_PROJET + "/" + self.ARTIFACT_ID + "-platform"
 
         #
-        self.GROUP_ID = self.RACINE.find(".//" + self.XMLNS + "groupId")
+        self.GROUP_ID = self.RACINE.find(".//" + self.XMLNS + "groupId").text
 
         # Chemin vers les modèles à construire.
-        chemin_modele = self.CHEMIN_PLATFORME + "src/main/java/" + self.GROUP_ID.text.replace(".", "/") + "/" + self.ARTIFACT_ID.replace('-', '') + "/" + "modeles"
+        chemin_modele = self.CHEMIN_PLATFORME + "/src/main/java/" + self.GROUP_ID.replace(".", "/") + "/" + self.ARTIFACT_ID.replace('-', '') + "/" + "modeles"
 
         # Mise à jour du chemin vers le dossier de types.
         self.CHEMIN_TYPES = chemin_modele + "/types"
@@ -90,4 +90,4 @@ class Modele:
         return self.GROUP_ID
 
     def get_aide_package(self):
-        return self.GROUP_ID + "." + self.ARTIFACT_ID.replace("-", "") + ".modeles.helper"
+        return self.GROUP_ID + "." + self.ARTIFACT_ID.replace("-", "") + ".modeles.helpers"
