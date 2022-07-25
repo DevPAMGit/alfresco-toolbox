@@ -1,7 +1,8 @@
 from os import path
 import os
 
-from mvc.controleur.generateur_fichier_aide_source_controleur import GenerateurFichierControleur
+from mvc.controleur.generateurs.generateur_alfresco_helper_fichier import GenerateurAlfrescoHelperFichier
+from mvc.controleur.generateurs.generateur_alfresco_modele_helper_fichier import GenerateurAlfrescoModeleHelperFichier
 from mvc.vue.vue import Vue
 from mvc.modele.modele import Modele
 
@@ -36,12 +37,14 @@ class Controleur:
         self.set_chemin_projet()
         self.creer_arborescence()
 
-        generateur_fichier = GenerateurFichierControleur(self.modele, self.vue)
-        generateur_fichier.creer_fichier_aide_source()
+        # Ecriture du fichier 'AlfrescoHelper.java'
+        GenerateurAlfrescoHelperFichier(self.modele, self.vue).creer_fichier_aide_source()
+        # Ecriture du fichier 'AlfrescoModeleHelper.java'
+        GenerateurAlfrescoModeleHelperFichier(self.modele, self.vue).creer_fichier_aide_modele_source()
 
     # Modifie le chemin du projet.
     def set_chemin_projet(self):
-        self.vue.information("[ETAPE 1] Initialisation du modèle")
+        self.vue.information("Initialisation du modèle")
         succes = False
         chemin_projet = None
 
@@ -66,5 +69,3 @@ class Controleur:
 
         # Modification du chemin du projet sur le modèle.
         self.modele.set_chemin_projet(chemin_projet)
-
-        self.vue.information("........[OK]\n")
