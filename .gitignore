@@ -56,11 +56,6 @@ cmake-build-*/
 # IntelliJ
 out/
 
-.idea/*
-mvc/vue/__pycache__/*
-mvc/modele/__pycache__/*
-mvc/controleur/__pycache__/*
-
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
@@ -121,3 +116,11 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm
 *.pyc
+mvc/controleur/__pycache__/controleur.cpython-39.pyc
+mvc/modele/__pycache__/modele.cpython-39.pyc
+mvc/vue/__pycache__/vue.cpython-39.pyc
+
+.idea/*
+mvc/vue/__pycache__/
+mvc/modele/__pycache__
+mvc/controleur/__pycache__
