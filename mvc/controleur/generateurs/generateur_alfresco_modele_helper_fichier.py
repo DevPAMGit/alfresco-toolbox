@@ -13,32 +13,43 @@ class GenerateurAlfrescoModeleHelperFichier:
         self.fd = codecs.open(self.modele.get_chemin_helper() + "/AlfrescoModeleHelper.java", "w", "utf-8")
 
     def creer_fichier_aide_modele_source(self):
-        self.vue.information("[ETAPE 3] Création de la classe d'aide Alfresco")
-        # Ecriture du package de la classe.
-        self.fd.write("package " + self.modele.get_aide_package() + ";\n\n")
-        # Ecriture des imports.
-        self.ecrire_imports()
-        # Ecritures de l'ouverture de classe
-        self.fd.write(
-            "/** Classe permettant de simplifier la gestion des modèles liées à des nœuds Alfresco. */\n"
-            "public class AlfrescoModeleHelper extends AlfrescoHelper {\n\n"
-            "\t/** Le nœud modèle de référence. */\n"
-            "\tprotected final NodeRef noeud;\n\n")
-        # Ecritures des contructeurs
-        self.ecrire_constructeurs()
-        # Ecritures des méthodes permettant de manipuler les aspects du nœud.
-        self.ecrire_methodes_aspects()
-        # Ecritures des méthodes permettant de manipuler le type du nœud.
-        self.ecrire_methodes_type()
-        # Ecritures des méthodes permettant de manipuler les propriétés du nœud.
-        self.ecrire_methodes_propriete()
-        # Ecritures des méthodes permettant de manipuler les nœuds parents du nœud.
-        self.ecrire_methodes_ancetre()
-        # Ecritures des méthodes permettant de manipuler le contenu du nœud.
-        self.ecrire_methodes_contenu()
+        self.vue.information("Génération du fichier java 'AlfrescoModeleHelper'.")
+        succes = True
 
-        self.fd.write("}\n")
-        self.fd.close()
+        try:
+            # Ecriture du package de la classe.
+            self.fd.write("package " + self.modele.get_aide_package() + ";\n\n")
+            # Ecriture des imports.
+            self.ecrire_imports()
+            # Ecritures de l'ouverture de classe
+            self.fd.write(
+                "/** Classe permettant de simplifier la gestion des modèles liées à des nœuds Alfresco. */\n"
+                "public class AlfrescoModeleHelper extends AlfrescoHelper {\n\n"
+                "\t/** Le nœud modèle de référence. */\n"
+                "\tprotected final NodeRef noeud;\n\n")
+            # Ecritures des contructeurs
+            self.ecrire_constructeurs()
+            # Ecritures des méthodes permettant de manipuler les aspects du nœud.
+            self.ecrire_methodes_aspects()
+            # Ecritures des méthodes permettant de manipuler le type du nœud.
+            self.ecrire_methodes_type()
+            # Ecritures des méthodes permettant de manipuler les propriétés du nœud.
+            self.ecrire_methodes_propriete()
+            # Ecritures des méthodes permettant de manipuler les nœuds parents du nœud.
+            self.ecrire_methodes_ancetre()
+            # Ecritures des méthodes permettant de manipuler le contenu du nœud.
+            self.ecrire_methodes_contenu()
+
+            self.fd.write("}\n")
+        except Exception as e:
+            self.vue.print_erreur("")
+            self.vue.print_erreur("Voici l'exception qui a été levée :")
+            succes = False
+            print(e)
+        finally:
+            self.fd.close()
+
+        exit() if not succes else self.vue.succes()
 
     def ecrire_constructeurs(self):
         self.fd.write(

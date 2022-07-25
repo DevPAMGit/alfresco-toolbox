@@ -12,12 +12,10 @@ class Vue:
 
     # Ecrit un message d'erreur sur la sortie standard.
     def print_erreur(self, param):
-        print(param)
-
-    #
-    def demande_chemin_projet(self):
-        print("Veuillez saisir le chemin vers votre dossier alfresco :", end='')
-        return input()
+        print("[ERREUR] " + param)
 
     def information(self, param):
-        print(param, end='')
+        print("[INFO] " + param, end='')
+
+    def succes(self):
+        print("...[SUCCES]")
