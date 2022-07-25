@@ -57,7 +57,7 @@ cmake-build-*/
 out/
 
 .idea/*
-mvc/modele/__pycache__
+__pycache__
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
