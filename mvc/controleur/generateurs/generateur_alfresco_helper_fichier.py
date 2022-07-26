@@ -2,6 +2,9 @@ import codecs
 
 
 # Classe permettant de générer le fichier java AlfrescoModeleHelper.
+import os.path
+
+
 class GenerateurAlfrescoHelperFichier:
 
     # Intialise une nouvelle instance de la classe 'GenerateurFichierControleur'.
@@ -10,46 +13,48 @@ class GenerateurAlfrescoHelperFichier:
     def __init__(self, modele, vue):
         self.modele = modele
         self.vue = vue
-        self.fd = codecs.open(self.modele.get_chemin_helper() + "/AlfrescoHelper.java", "w", "utf-8")
+        self.chemin_fichier = self.modele.get_chemin_helper() + "/AlfrescoHelper.java"
+        self.fd = codecs.open(self.chemin_fichier, "w", "utf-8")
 
     # Méthode permetant de créer la classe/fichier 'AlfrescoHelper'.
     def creer_fichier_aide_source(self):
         self.vue.information("Génération du fichier java 'AlfrescoHelper.java'.")
         succes = True
 
-        try:
-            self.fd.write("package " + self.modele.get_aide_package() + ";\n\n")
+        if not os.path.exists(self.chemin_fichier):
 
-            # Ecriture des imports.
-            self.ecrire_imports()
+            try:
+                self.fd.write("package " + self.modele.get_helpers_package() + ";\n\n")
 
-            # Ecritures de l'ouverture de classe
-            self.fd.write(
-                "/** Classe permettant de simplifier la gestion des nœuds  Alfresco. */\n"
-                "public class AlfrescoHelper {\n\n")
+                # Ecriture des imports.
+                self.ecrire_imports()
 
-            # Ecriture des paramètres de classe
-            self.fd.write(
-                "\t/** Le service de gestion des nœuds d'Alfresco. */\n"
-                "\tprotected NodeService serviceNoeud;\n\n")
+                # Ecritures de l'ouverture de classe
+                self.fd.write(
+                    "/** Classe permettant de simplifier la gestion des nœuds  Alfresco. */\n"
+                    "public class AlfrescoHelper {\n\n")
 
-            self.ecrire_constructeurs()
-            self.ecrire_methodes_aspects()
-            self.ecrire_methodes_type()
-            self.ecrire_methodes_propriete()
-            self.ecrire_methodes_ancetre()
-            self.ecrire_methodes_contenu()
+                # Ecriture des paramètres de classe
+                self.fd.write(
+                    "\t/** Le service de gestion des nœuds d'Alfresco. */\n"
+                    "\tprotected NodeService serviceNoeud;\n\n")
 
-            # Ecriture de la fin de fichier et fermeture
-            self.fd.write("}")
-        except Exception as e:
-            self.vue.print_erreur("")
-            self.vue.print_erreur("Voici l'exception qui a été levée :")
-            succes = False
-            print(e)
-        finally:
-            self.fd.close()
+                self.ecrire_constructeurs()
+                self.ecrire_methodes_aspects()
+                self.ecrire_methodes_type()
+                self.ecrire_methodes_propriete()
+                self.ecrire_methodes_ancetre()
+                self.ecrire_methodes_contenu()
 
+                # Ecriture de la fin de fichier et fermeture
+                self.fd.write("}")
+            except Exception as e:
+                self.vue.print_erreur("")
+                self.vue.print_erreur("Voici l'exception qui a été levée :")
+                succes = False
+                print(e)
+
+        self.fd.close()
         exit() if not succes else self.vue.succes()
 
     # Méthode permettant d'écrire les imports nécessaire de la classe.
