@@ -116,11 +116,11 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm
 *.pyc
-mvc/controleur/__pycache__/controleur.cpython-39.pyc
-mvc/modele/__pycache__/modele.cpython-39.pyc
-mvc/vue/__pycache__/vue.cpython-39.pyc
+modules/controleur/__pycache__/controleur.cpython-39.pyc
+modules/modele/__pycache__/modele.cpython-39.pyc
+modules/vue/__pycache__/vue.cpython-39.pyc
 
 .idea/*
-mvc/vue/__pycache__/
-mvc/modele/__pycache__
-mvc/controleur/__pycache__
+modules/vue/__pycache__/
+modules/modele/__pycache__
+modules/controleur/__pycache__
