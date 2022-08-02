@@ -16,6 +16,11 @@ class Propriete:
     def set_titre(self, titre):
         self.TITRE = titre
 
+    # Récupère la valeur du titre.
+    # Retourne Le titre de la propriété.
+    def get_titre(self):
+        return self.TITRE
+
     def get_nom(self):
         return self.NOM
 

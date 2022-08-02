@@ -3,11 +3,13 @@ class Aspect:
 
     # Initialise une nouvelle instance de la classe 'Aspect'.
     # nom_complet Le nom complet de l'aspect.
-    def __init__(self, nom_complet):
+    def __init__(self, uri: str, nom_complet: str):
+        self.URI = uri
         self.TITRE = None
         self.PROPRIETES = []
         self.DESCRIPTION = None
         self.NOM_COMPLET = nom_complet
+        self.PREFIX = nom_complet[0: nom_complet.rindex(":")]
         self.NOM = nom_complet[nom_complet.rindex(":") + 1:len(nom_complet)]
 
     # Récupère le nom de l'aspect.
@@ -19,6 +21,11 @@ class Aspect:
     # Retourne le nom complet de l'aspect.
     def get_nom_complet(self):
         return self.NOM_COMPLET
+
+    # Récupère le prefix l'aspect.
+    # Retourne le prefix de l'aspect.
+    def get_prefix(self):
+        return self.PREFIX
 
     # Modifie de la valeur de la description de l'aspect.
     # description La valeur de la description de l'aspect.
@@ -44,3 +51,6 @@ class Aspect:
     # Retourne La liste des propriétés.
     def get_proprietes(self):
         return self.PROPRIETES
+
+    def get_uri(self):
+        return self.URI

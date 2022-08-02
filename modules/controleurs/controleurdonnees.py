@@ -68,18 +68,19 @@ class ControleurDonnees:
 
         racine = ElementTree.parse(chemin_type_contenu).getroot()
         xmlns = racine.tag[0:racine.tag.rindex("}") + 1]
+        uri = racine.find(".//" + xmlns + "namespaces").find(xmlns + "namespace").attrib["uri"]
 
-        self.charger_aspects(racine, xmlns)
+        self.charger_aspects(racine, uri, xmlns)
         self.charger_types(racine, xmlns)
 
     # Charge les aspects d'un fichier de type de contenu.
     # racine La racine du fichier XML de type de contenu.
-    def charger_aspects(self, racine, xmlns):
+    def charger_aspects(self, racine, uri: str, xmlns):
         aspects = racine.find(".//" + xmlns + "aspects")
 
         if aspects is not None:
             for aspect in aspects.findall(xmlns + "aspect"):
-                self.charge_aspect(xmlns, aspects, aspect)
+                self.charge_aspect(xmlns, uri, aspects, aspect)
 
     def charger_types(self, racine, xmlns):
         types = racine.find(".//" + xmlns + "types")
@@ -92,8 +93,8 @@ class ControleurDonnees:
     # xmlns Le xmlns du fichier XML.
     # aspects Le noeud XML contenant tous les aspects.
     # aspect Le noeud XML de l'aspect à ajouter.
-    def charge_aspect(self, xmlns, aspects, aspect: Element):
-        asp = Aspect(aspect.attrib["name"])
+    def charge_aspect(self, xmlns, uri: str, aspects, aspect: Element):
+        asp = Aspect(uri, aspect.attrib["name"])
 
         self.VUE.chargement_aspect(asp.get_nom())
 

@@ -104,3 +104,14 @@ class Vue:
 
     def erreur_creation_arborescence(self, e: Exception):
         print(self.ERROR + "")
+
+    def creation_fichier_generaux(self):
+        print(self.INFO + "Création des fichiers généraux.")
+
+    def creation_fichier(self, nom_fichier):
+        message = self.ACTION + "Création du fichier '" + nom_fichier + "'."
+        self.PREVIOUS = len(message)
+        print(message, end="")
+
+    def creation_aspects(self):
+        print(self.INFO + "Création des fichiers aspects.")

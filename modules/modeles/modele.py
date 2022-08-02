@@ -71,3 +71,6 @@ class Modele:
 
     def get_package_modele_sources(self):
         return self.GROUP_ID + "." + self.ARTIFACT_ID.replace("-", "") + ".modeles.sources;"
+
+    def get_package_modele_contenus(self):
+        return self.GROUP_ID + "." + self.ARTIFACT_ID.replace("-", "") + ".modeles.typescontenus"

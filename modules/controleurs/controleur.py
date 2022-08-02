@@ -2,8 +2,8 @@ import os
 from os import path
 
 from modules.controleurs.controleurdonnees import ControleurDonnees
-from modules.controleurs.generateurs.GenerateurAlfrescoHelper import GenerateurAlfrescoHelperFichier
 from modules.controleurs.generateurs.controleurgenerateur import ControleurGenerateur
+from modules.controleurs.generateurs.controleurgenerateuraspect import ControleurGenerateurAspect
 from modules.modeles.modele import Modele
 from modules.vue.vue import Vue
 
@@ -15,8 +15,9 @@ class Controleur:
     def __init__(self):
         self.VUE = Vue()
         self.MODELE = Modele()
-        self.GENERATEUR = ControleurGenerateur(self.MODELE)
         self.CONTROLEUR_DONNEES = ControleurDonnees(self.VUE, self.MODELE)
+        self.GENERATEUR_GENERAL = ControleurGenerateur(self.MODELE, self.VUE)
+        self.GENERATEUR_ASPECTS = ControleurGenerateurAspect(self.MODELE, self.VUE)
 
     # Génère les fichiers modèles du projet.
     # chemin Le chemin vers
@@ -24,16 +25,7 @@ class Controleur:
         self.VUE.welcome()
 
         exit() if not self.verifier_chemin(chemin) else self.CONTROLEUR_DONNEES.charger_donnees_projet(chemin)
-        if not self.creer_arborescence():
-            exit()
-
-        self.GENERATEUR.creer_service_noeud()
-        self.GENERATEUR.creer_noeud_modele()
-
-
-
-        # GenerateurAlfrescoHelperFichier(self.MODELE, self.VUE).creer_fichier_aide_source()
-
+        exit() if not self.creer_arborescence() else self.generer_fichiers()
 
     # Vérifie que le chemin mis en paramètre est un dossier 'maven'.
     # chemin Le chemin vers le dossier maven 'Alfresco'.
@@ -72,5 +64,12 @@ class Controleur:
             return False
         return True
 
+    # Méthode permettant de générer les fichiers du projet.
+    def generer_fichiers(self):
+        self.VUE.creation_fichier_generaux()
+        self.GENERATEUR_GENERAL.creer_service_noeud()
+        self.GENERATEUR_GENERAL.creer_noeud_modele()
+        self.VUE.creation_aspects()
+        self.GENERATEUR_ASPECTS.creer_fichiers_aspects()
 
 

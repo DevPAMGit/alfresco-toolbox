@@ -1,5 +1,4 @@
 
-
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.namespace.QName;
@@ -31,7 +30,8 @@ public class AlfrescoModeleHelper extends AlfrescoHelper {
 
 	/** Ajoute un aspect à un nœud.
 	* @param aspect L'aspect à ajouter.
-	* @param valeurs Les valeurs de l'aspect à sa création. */	public void addAspect(QName aspect, Map<QName, Serializable> valeurs) {
+	* @param valeurs Les valeurs de l'aspect à sa création. */
+	public void addAspect(QName aspect, Map<QName, Serializable> valeurs) {
 		this.addAspect(this.noeud, aspect, valeurs);
 	}
 
@@ -39,7 +39,6 @@ public class AlfrescoModeleHelper extends AlfrescoHelper {
 	* @param aspect L'aspect que l'on souhaite retirer du nœud. */
 	public void supprimeAspect(QName aspect) {
 		this.supprimeAspect(this.noeud, aspect);
-
 	}
 
 	/** Vérifie si le nœud du modèle est du type en en paramètre.
