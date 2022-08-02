@@ -17,20 +17,15 @@ Le script génèrera l'arborescence _java_ ci-dessous:
 ```
 .
 ├── org.cd59
-├── _drafts
-│   ├── begin-with-the-crazy-ideas.textile
-│   └── on-simplicity-in-technology.markdown
-├── _includes
-│   ├── footer.html
-│   └── header.html
-├── _layouts
-│   ├── default.html
-│   └── post.html
-├── _posts
-│   ├── 2007-10-29-why-every-programmer-should-play-nethack.textile
-│   └── 2009-04-26-barcamp-boston-4-roundup.textile
-├── _data
-│   └── members.yml
-├── _site
-└── index.html
+│   └── affichagedesactes.modeles
+        └── sources
+        └── typescontenus.acme
+            ├── aspects
+            │   └── securityclassified
+            │       └── SecurityclassifiedAspectHelperModele.java                
+            │       └── SecurityclassifiedAspectModele.java
+            └── types
+                └── document
+                    └── DocumentTypeHelperModele.java
+                    └── DocumentTypele.java
 ```
