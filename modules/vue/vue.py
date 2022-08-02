@@ -106,7 +106,7 @@ class Vue:
         print(self.ERROR + "")
 
     def creation_fichier_generaux(self):
-        print(self.INFO + "Création des fichiers généraux.")
+        print("\n" + self.INFO + "Création des fichiers généraux.")
 
     def creation_fichier(self, nom_fichier):
         message = self.ACTION + "Création du fichier '" + nom_fichier + "'."
@@ -114,4 +114,7 @@ class Vue:
         print(message, end="")
 
     def creation_aspects(self):
-        print(self.INFO + "Création des fichiers aspects.")
+        print("\n" + self.INFO + "Création des fichiers aspects.")
+
+    def creation_types(self):
+        print("\n" + self.INFO + "Création des fichiers types.")

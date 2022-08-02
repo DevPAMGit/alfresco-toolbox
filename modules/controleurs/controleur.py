@@ -4,6 +4,7 @@ from os import path
 from modules.controleurs.controleurdonnees import ControleurDonnees
 from modules.controleurs.generateurs.controleurgenerateur import ControleurGenerateur
 from modules.controleurs.generateurs.controleurgenerateuraspect import ControleurGenerateurAspect
+from modules.controleurs.generateurs.controleurgenerateurtype import ControleurGenerateurType
 from modules.modeles.modele import Modele
 from modules.vue.vue import Vue
 
@@ -17,6 +18,7 @@ class Controleur:
         self.MODELE = Modele()
         self.CONTROLEUR_DONNEES = ControleurDonnees(self.VUE, self.MODELE)
         self.GENERATEUR_GENERAL = ControleurGenerateur(self.MODELE, self.VUE)
+        self.GENERATEUR_TYPES = ControleurGenerateurType(self.MODELE, self.VUE)
         self.GENERATEUR_ASPECTS = ControleurGenerateurAspect(self.MODELE, self.VUE)
 
     # Génère les fichiers modèles du projet.
@@ -71,5 +73,5 @@ class Controleur:
         self.GENERATEUR_GENERAL.creer_noeud_modele()
         self.VUE.creation_aspects()
         self.GENERATEUR_ASPECTS.creer_fichiers_aspects()
-
-
+        self.VUE.creation_types()
+        self.GENERATEUR_TYPES.creer_fichiers_types()

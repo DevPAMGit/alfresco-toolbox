@@ -2,6 +2,7 @@
 class Aspect:
 
     # Initialise une nouvelle instance de la classe 'Aspect'.
+    # uri L'URI de type de contenu.
     # nom_complet Le nom complet de l'aspect.
     def __init__(self, uri: str, nom_complet: str):
         self.URI = uri

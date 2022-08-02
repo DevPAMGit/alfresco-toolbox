@@ -33,7 +33,8 @@ public class AlfrescoHelper {
 	/** Ajoute un aspect à un nœud.
 	* @param noeud Le nœud auquel on souhaite ajouter l'aspect.
 	* @param aspect L'aspect à ajouter.
-	* @param valeurs Les valeurs de l'aspect à sa création. */	public void addAspect(NodeRef noeud, QName aspect, Map<QName, Serializable> valeurs) {
+	* @param valeurs Les valeurs de l'aspect à sa création. */
+	public void addAspect(NodeRef noeud, QName aspect, Map<QName, Serializable> valeurs) {
 		if(this.hasAspect(noeud, aspect)) this.majProprietes(noeud, valeurs);
 		else this.serviceNoeud.addAspect(noeud, aspect, valeurs);
 	}
@@ -44,7 +45,6 @@ public class AlfrescoHelper {
 	public void supprimeAspect(NodeRef noeud, QName aspect) {
 		if(!this.hasAspect(noeud, aspect)) return;
 		this.serviceNoeud.removeAspect(noeud, aspect);
-
 	}
 
 	/** Vérifie si le nœud est du type en en paramètre.

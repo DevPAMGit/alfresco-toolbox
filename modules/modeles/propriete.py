@@ -26,3 +26,9 @@ class Propriete:
 
     def get_nom_complet(self):
         return self.NOM_COMPLET
+
+    def get_type(self):
+        return self.TYPE
+
+    def get_mandatory(self):
+        return self.MANDATORY

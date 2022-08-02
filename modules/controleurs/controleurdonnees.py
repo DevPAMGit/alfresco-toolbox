@@ -71,7 +71,7 @@ class ControleurDonnees:
         uri = racine.find(".//" + xmlns + "namespaces").find(xmlns + "namespace").attrib["uri"]
 
         self.charger_aspects(racine, uri, xmlns)
-        self.charger_types(racine, xmlns)
+        self.charger_types(racine, uri, xmlns)
 
     # Charge les aspects d'un fichier de type de contenu.
     # racine La racine du fichier XML de type de contenu.
@@ -82,12 +82,12 @@ class ControleurDonnees:
             for aspect in aspects.findall(xmlns + "aspect"):
                 self.charge_aspect(xmlns, uri, aspects, aspect)
 
-    def charger_types(self, racine, xmlns):
+    def charger_types(self, racine, uri, xmlns):
         types = racine.find(".//" + xmlns + "types")
 
         if types is not None:
             for t in types.findall(xmlns + "type"):
-                self.charge_type(xmlns, types, t)
+                self.charge_type(xmlns, uri, types, t)
 
     # Charge un aspect dans le modèle.
     # xmlns Le xmlns du fichier XML.
@@ -210,8 +210,8 @@ class ControleurDonnees:
             return None
         return noeud_titre.text
 
-    def charge_type(self, xmlns: str, types: Element, t: Element):
-        typ = Type(t.attrib["name"])
+    def charge_type(self, xmlns: str, uri: str, types: Element, t: Element):
+        typ = Type(uri, t.attrib["name"])
 
         self.VUE.chargement_type(typ.get_nom_complet())
 

@@ -1,14 +1,14 @@
 import codecs
 import os.path
 
-from modules.modeles.aspect import Aspect
 from modules.modeles.modele import Modele
 from modules.modeles.propriete import Propriete
+from modules.modeles.type import Type
 from modules.vue.vue import Vue
 
 
 # Classe générant les fichiers modèle pour les aspects.
-class ControleurGenerateurAspect:
+class ControleurGenerateurType:
 
     # Initialise une nouvelle instance de la classe 'ControleurGenerateurAspect'.
     # modele Le modele du controleur.
@@ -18,40 +18,40 @@ class ControleurGenerateurAspect:
         self.MODELE = modele
 
     # Crée les fichiers nécessaires pour les aspects.
-    def creer_fichiers_aspects(self):
-        aspects = self.MODELE.get_aspects()
-        for aspect_name in aspects.keys():
-            self.creer_fichier_modele_aspect(aspects[aspect_name])
-            self.creer_fichier_helper_aspect(aspects[aspect_name])
+    def creer_fichiers_types(self):
+        types = self.MODELE.get_types()
+        for type_name in types.keys():
+            self.creer_fichier_modele_type(types[type_name])
+            self.creer_fichier_helper_type(types[type_name])
 
     # Crée un fichier modèle pour un aspect.
     # aspect L'aspect dont on va créer le fichier modèle.
-    def creer_fichier_modele_aspect(self, aspect):
-        nom_fichier = self.get_nom_class(aspect) + "AspectModele.java"
-        chemin = self.get_chemin_dossier_aspect(aspect) + "/" + nom_fichier
+    def creer_fichier_modele_type(self, typ: Type):
+        nom_fichier = self.get_nom_class(typ) + "Modele.java"
+        chemin = self.get_chemin_dossier_type(typ) + "/" + nom_fichier
 
         self.VUE.creation_fichier(nom_fichier)
-        self.creer_arborescence(aspect)
+        self.creer_arborescence(typ)
 
         fd = codecs.open(chemin, "w", "utf-8")
 
-        fd.write("package " + self.get_aspect_package(aspect) + ";\n\n")
+        fd.write("package " + self.get_type_package(typ) + ";\n\n")
 
         fd.write("import org.alfresco.service.namespace.QName;\n\n")
 
-        fd.write("/** Classe modèle personnalisée pour l'aspect '" + aspect.get_nom_complet() + "'. */\n " +
-                 "public class " + aspect.get_nom().capitalize() + "AspectModele" + " {\n\n ")
+        fd.write("/** Classe modèle personnalisée pour le type '" + typ.get_nom_complet() + "'. */\n " +
+                 "public class " + typ.get_nom().capitalize() + "Modele" + " {\n\n ")
 
         fd.write("\t/** Le prefix du type de contenu. */\n"
-                 "\tpublic final static String PREFIX = \"" + aspect.get_prefix() + "\";\n\n")
+                 "\tpublic final static String PREFIX = \"" + typ.get_prefix() + "\";\n\n")
 
         fd.write("\t/** L'URI du type de contenu. */\n"
-                 "\tpublic final static String URI =  \"" + aspect.get_uri() + "\";\n\n")
+                 "\tpublic final static String URI =  \"" + typ.get_uri() + "\";\n\n")
 
         fd.write("\t/** Le nom de l'aspect. */\n"
-                 "\tpublic final static QName NOM = QName.createQName( URI , \"" + aspect.get_nom() + "\");\n\n")
+                 "\tpublic final static QName NOM = QName.createQName( URI , \"" + typ.get_nom() + "\");\n\n")
 
-        for propriete in aspect.get_proprietes():
+        for propriete in typ.get_proprietes():
             fd.write(self.get_model_propriete(propriete))
 
         fd.write("}\n")
@@ -61,53 +61,52 @@ class ControleurGenerateurAspect:
 
     # Crée un fichier helper modèle pour un aspect.
     # aspect L'aspect dont on va créer le fichier helper modèle.
-    def creer_fichier_helper_aspect(self, aspect):
-        nom_fichier = self.get_nom_class(aspect) + "AspectHelperModele.java"
-        chemin = self.get_chemin_dossier_aspect(aspect) + "/" + nom_fichier
+    def creer_fichier_helper_type(self, typ):
+        nom_fichier = self.get_nom_class(typ) + "HelperModele.java"
+        chemin = self.get_chemin_dossier_type(typ) + "/" + nom_fichier
 
         self.VUE.creation_fichier(nom_fichier)
-        self.creer_arborescence(aspect)
+        self.creer_arborescence(typ)
 
         fd = codecs.open(chemin, "w", "utf-8")
 
-        fd.write("package " + self.get_aspect_package(aspect) + ";\n\n")
+        fd.write("package " + self.get_type_package(typ) + ";\n\n")
 
         fd.write("import org.alfresco.service.cmr.repository.NodeService;\n"
                  "import org.alfresco.service.cmr.repository.NodeRef;\n"
                  "import org.alfresco.service.namespace.QName;\n\n"
-                 "import org.example.affichagedesactes.modeles.sources.AlfrescoModeleHelper;\n" +
-                 "import java.util.Date;\n\n")
+                 "import org.example.affichagedesactes.modeles.sources.AlfrescoModeleHelper;\n\n" +
+                 "import java.util.Date;")
 
-        fd.write("/** Classe modèle d'aide personnalisée pour l'aspect '" + aspect.get_nom_complet() + "'. */\n " +
-                 "public class " + self.get_nom_class(aspect) + "AspectHelperModele extends AlfrescoModeleHelper {\n\n ")
+        fd.write("/** Classe modèle d'aide personnalisée pour l'aspect '" + typ.get_nom_complet() + "'. */\n " +
+                 "public class " + self.get_nom_class(typ) + "HelperModele extends AlfrescoModeleHelper {\n\n ")
 
-        fd.write("\t/** Initialise une nouvelle instance de la classe {@link " + self.get_nom_class(aspect)
-                 + "AspectHelperModele}. \n" +
+        fd.write("\t/** Initialise une nouvelle instance de la classe {@link " + self.get_nom_class(typ)
+                 + "HelperModele}. \n" +
                  "\t * @param serviceNoeud Le service de gestion des noeuds d'Alfresco. \n" +
                  "\t * @param noeud Le noeud de référence. */\n"
-                 "\tpublic " + self.get_nom_class(aspect) +
-                 "AspectHelperModele(NodeService serviceNoeud, NodeRef noeud){\n" +
+                 "\tpublic " + self.get_nom_class(typ) + "HelperModele(NodeService serviceNoeud, NodeRef noeud){\n" +
                  "\t\tsuper(serviceNoeud, noeud);\n" +
                  "\t}\n\n" +
                  "\t/** Permet de vérifier que le nœud di modèle possède l'aspect désigné en paramètre.\n" +
-                 "\t * @return <c>true</c> si l'aspect est présent, sinon <c>false</c>. */ \n" +
+                 "\t * @return <c>true</c> si l'aspect est présent, sinon <c>false</c>. */ " +
                  "\tpublic boolean hasAspect(){ \n" +
-                 "\t\treturn this.hasAspect(" + self.get_nom_class(aspect) + "AspectModele.NOM);\n" +
+                 "\t\treturn this.hasAspect(" + self.get_nom_class(typ) + "Modele.NOM);\n" +
                  "\t}\n\n"
-                 "\t/** Supprime un aspect du noeud. */\n"                 
+                 "\t/** Supprime un aspect du noeud. \n"                 
                  "\tpublic void supprimeAspect() { \n"
-                 "\t\tthis.supprimeAspect(this.noeud, " + self.get_nom_class(aspect) + "AspectModele.NOM); \n"
-                 "\t}\n\n")
+                 "\t\tthis.supprimeAspect(this.noeud, " + self.get_nom_class(typ) + "Modele.NOM); \n"
+                 "}\n\n")
 
         a_propriete_mandatory = False
 
-        for propriete in aspect.get_proprietes():
+        for propriete in typ.get_proprietes():
             if propriete.get_mandatory():
                 a_propriete_mandatory = True
-            fd.write(self.get_model_helper_methodes(aspect, propriete))
+            fd.write(self.get_model_helper_methodes(typ, propriete))
 
         if a_propriete_mandatory:
-            fd.write(self.get_aspect_methode_validite(aspect))
+            fd.write(self.get_aspect_methode_validite(typ))
 
         fd.write("}\n")
         fd.close()
@@ -116,19 +115,19 @@ class ControleurGenerateurAspect:
 
     # Crée l'arborescence de l'aspect.
     # aspect L'aspect dont il faut créer l'arborescence.
-    def creer_arborescence(self, aspect: Aspect):
-        chemin = self.get_chemin_dossier_aspect(aspect)
+    def creer_arborescence(self, typ: Type):
+        chemin = self.get_chemin_dossier_type(typ)
 
         if not os.path.exists(chemin):
             os.makedirs(chemin)
 
-    def get_chemin_dossier_aspect(self, aspect):
-        return self.MODELE.get_chemin_modele_contenus() + "/" + aspect.get_prefix().lower() + "/aspects/" \
-            + aspect.get_nom().lower()
+    def get_chemin_dossier_type(self, typ: Type):
+        return self.MODELE.get_chemin_modele_contenus() + "/" + typ.get_prefix().lower() + "/types/" \
+            + typ.get_nom().lower()
 
-    def get_aspect_package(self, aspect):
-        return self.MODELE.get_package_modele_contenus() + "." + aspect.get_prefix().lower() + ".aspects." \
-               + aspect.get_nom().lower()
+    def get_type_package(self, typ):
+        return self.MODELE.get_package_modele_contenus() + "." + typ.get_prefix().lower() + ".types." \
+               + typ.get_nom().lower()
 
     # Récupère le modèle de la propriété.
     # Retourne le modèle de la propriété.
@@ -139,28 +138,28 @@ class ControleurGenerateurAspect:
                + propriete.get_nom() + "\");\n\n"
 
     @staticmethod
-    def get_nom_class(aspect: Aspect):
-        return aspect.get_nom().capitalize()
+    def get_nom_class(typ: Type):
+        return typ.get_nom().capitalize()
 
     # Permet de récupérer les méthodes nécessaires pour un modèle.
     # aspect L'aspect de la propriété.
     # propriete La propriété dont on souhaite récupérer les méthodes.
     # Retourne une chaîne de caractères.
-    def get_model_helper_methodes(self, aspect: Aspect, propriete: Propriete):
-        resultat = self.get_methode_getter(aspect, propriete)
-        resultat += self.get_methode_setter(aspect, propriete)
+    def get_model_helper_methodes(self, typ: Type, propriete: Propriete):
+        resultat = self.get_methode_getter(typ, propriete)
+        resultat += self.get_methode_setter(typ, propriete)
         if propriete.get_mandatory():
-            resultat += self.get_methode_validite(aspect, propriete)
+            resultat += self.get_methode_validite(typ, propriete)
         return resultat
 
     # Permet de récupérer la méthode getter de la propriété en paramètre.
     # aspect L'aspect de la propriété.
     # propriete La propriété dont on souhaite récupérer la méthode getter.
     # Retourne une chaîne de caractères.
-    def get_methode_getter(self, aspect: Aspect, propriete: Propriete):
+    def get_methode_getter(self, typ: Type, propriete: Propriete):
         prop_type = propriete.get_type()
-        prop_nom_entier = aspect.get_nom_complet()
-        prop_modele = self.get_nom_class(aspect) + "AspectModele." + propriete.get_nom().upper()
+        prop_nom_entier = typ.get_nom_complet()
+        prop_modele = self.get_nom_class(typ) + "Modele." + propriete.get_nom().upper()
 
         return "\t/** Méthode permettant de récupérer la valeur de la propriété '" + prop_nom_entier + "'. \n" + \
                "\t * @return " + prop_type + " La valeur de la propriété '" + prop_nom_entier + "'.  */\n" + \
@@ -172,10 +171,10 @@ class ControleurGenerateurAspect:
     # aspect L'aspect de la propriété.
     # propriete La propriété dont on souhaite récupérer la méthode getter.
     # Retourne une chaîne de caractères.
-    def get_methode_setter(self, aspect: Aspect, propriete: Propriete):
+    def get_methode_setter(self, typ: Type, propriete: Propriete):
         prop_type = propriete.get_type()
-        prop_nom_entier = aspect.get_nom_complet()
-        prop_modele = self.get_nom_class(aspect) + "AspectModele." + propriete.get_nom().upper()
+        prop_nom_entier = typ.get_nom_complet()
+        prop_modele = self.get_nom_class(typ) + "Modele." + propriete.get_nom().upper()
 
         return "\t/** Méthode permettant de récupérer la valeur de la propriété '" + prop_nom_entier + "'. \n" + \
                "\t * @param valeur La nouvelle valeur de la propriété '" + prop_nom_entier + "'." + \
@@ -189,9 +188,9 @@ class ControleurGenerateurAspect:
     # propriete La propriété dont on souhaite récupérer la méthode getter.
     # Retourne une chaîne de caractères.
     @staticmethod
-    def get_methode_validite(aspect: Aspect, propriete: Propriete):
+    def get_methode_validite(typ: Type, propriete: Propriete):
         prop_type = propriete.get_type()
-        prop_nom_entier = aspect.get_nom_complet()
+        prop_nom_entier = typ.get_nom_complet()
 
         resultat = "\t/** Méthode permettant de vérifier si la valeur de la propriété '" + \
                    prop_nom_entier + "' est valide. \n" + \
@@ -213,15 +212,22 @@ class ControleurGenerateurAspect:
         return resultat
 
     @staticmethod
-    def get_aspect_methode_validite(aspect: Aspect):
-        re = "\t/** Méthode permettant de vérifier la validité de l'aspect '" + aspect.get_nom_complet() + "'. \n" + \
-             "\t * @return <c>true</c> si l'aspect à toutes ces propriétés valides sinon <c>false</c>. */ \n" + \
+    def get_aspect_methode_validite(typ: Type):
+        re = "\t/** Méthode permettant de vérifier la validité de l'aspect '" + typ.get_nom_complet() + "'. \n" + \
+             "\t * @return <c>true</c> si l'aspect à toutes ces propriétés valides sinon <c>false</c>. */\n" + \
              "\tpublic boolean estAspectValide() { \n" + \
-             "\t\treturn ( this.hasAspect()"
+             "\t\treturn ( "
 
-        for propriete in aspect.get_proprietes():
+        plus = False
+
+        for propriete in typ.get_proprietes():
             if propriete.get_mandatory():
-                re += "\n\t\t         && this.est" + propriete.get_nom().capitalize() + "Valide()"
 
-        re += "\n\t\t);\n\t}\n\n"
+                if plus:
+                    re += "\t\t         && "
+
+                re += "this.est" + propriete.get_nom().capitalize() + "Valide()\n"
+                plus = True
+
+        re += "\t\t);\n\t}\n\n"
         return re
