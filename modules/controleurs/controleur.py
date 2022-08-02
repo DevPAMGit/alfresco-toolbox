@@ -1,3 +1,4 @@
+import codecs
 import os
 from os import path
 
@@ -26,8 +27,16 @@ class Controleur:
     def generer_projet(self, chemin):
         self.VUE.welcome()
 
-        exit() if not self.verifier_chemin(chemin) else self.CONTROLEUR_DONNEES.charger_donnees_projet(chemin)
-        exit() if not self.creer_arborescence() else self.generer_fichiers()
+        if not self.verifier_chemin(chemin):
+            exit()
+
+        self.nettoyage_pom(chemin + "/pom.xml")
+
+        self.CONTROLEUR_DONNEES.charger_donnees_projet(chemin)
+        if not self.creer_arborescence():
+            exit()
+
+        self.generer_fichiers()
 
     # Vérifie que le chemin mis en paramètre est un dossier 'maven'.
     # chemin Le chemin vers le dossier maven 'Alfresco'.
@@ -75,3 +84,21 @@ class Controleur:
         self.GENERATEUR_ASPECTS.creer_fichiers_aspects()
         self.VUE.creation_types()
         self.GENERATEUR_TYPES.creer_fichiers_types()
+
+    def nettoyage_pom(self, chemin_pom):
+        self.VUE.nettoyage_pom()
+
+        fd = codecs.open(chemin_pom, "r", "utf-8")
+        contenu = ""
+
+        for ligne in fd:
+            if not ligne.isspace():
+                contenu += ligne
+
+        fd.close()
+
+        fd = codecs.open(chemin_pom, "w", "utf-8")
+        fd.write(contenu)
+        fd.close()
+
+        self.VUE.succes()

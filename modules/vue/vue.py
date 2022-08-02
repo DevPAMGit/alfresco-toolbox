@@ -118,3 +118,8 @@ class Vue:
 
     def creation_types(self):
         print("\n" + self.INFO + "Création des fichiers types.")
+
+    def nettoyage_pom(self):
+        message = "\n" + self.ACTION + "Nettoyage du POM du projet."
+        self.PREVIOUS = len(message)
+        print(message, end="")

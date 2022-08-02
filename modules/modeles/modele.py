@@ -77,3 +77,4 @@ class Modele:
 
     def get_types(self):
         return self.TYPES
+
