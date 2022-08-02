@@ -1,6 +1,5 @@
 
 import java.util.ArrayList;
-import org.alfresco.model.ContentModel;
 import org.alfresco.service.namespace.QName;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
@@ -10,7 +9,7 @@ import java.util.Map;
 import java.util.List;
 import java.io.Serializable;
 
-/** Classe permettant de simplifier la gestion des nœuds  Alfresco. */
+/** Classe permettant de simplifier la gestion des nœuds Alfresco. */
 public class AlfrescoHelper {
 
 	/** Le service de gestion des nœuds d'Alfresco. */
@@ -85,8 +84,8 @@ public class AlfrescoHelper {
 		this.serviceNoeud.setProperties(noeud, valeurs);
 	}
 
-	/** Permet de récupérer le nœud parent au noeud mis en paramètre.
-	* @param noeud Le noeud dont on souhaite récupérer le parent.
+	/** Permet de récupérer le nœud parent au nœud mis en paramètre.
+	* @param noeud Le nœud dont on souhaite récupérer le parent.
 	* @return Une instance de type {@link NodeRef} représentant le parent du nœud parent. */
 	protected NodeRef getNoeudParent(NodeRef noeud){
 		return this.serviceNoeud.getPrimaryParent(noeud).getParentRef();

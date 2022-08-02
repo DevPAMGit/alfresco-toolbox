@@ -21,7 +21,7 @@ class ControleurGenerateur:
         fd2 = codecs.open(self.MODELE.get_chemin_modele_sources() + "/AlfrescoHelper.java", "w", "utf-8")
         fd1 = codecs.open(self.get_chemin_service_noeud(), "r", "utf-8")
 
-        fd2.write("package " + self.MODELE.get_package_modele_sources() + "\n")
+        fd2.write("package " + self.MODELE.get_package_modele_sources() + "; \n")
         for ligne in fd1:
             fd2.write(ligne)
 
@@ -35,7 +35,7 @@ class ControleurGenerateur:
         fd2 = codecs.open(self.MODELE.get_chemin_modele_sources() + "/AlfrescoModeleHelper.java", "w", "utf-8")
         fd1 = codecs.open(self.get_chemin_modele_noeud(), "r", "utf-8")
 
-        fd2.write("package " + self.MODELE.get_package_modele_sources() + "\n")
+        fd2.write("package " + self.MODELE.get_package_modele_sources() + ";\n")
         for ligne in fd1:
             fd2.write(ligne)
 

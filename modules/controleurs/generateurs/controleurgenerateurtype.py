@@ -7,27 +7,27 @@ from modules.modeles.type import Type
 from modules.vue.vue import Vue
 
 
-# Classe générant les fichiers modèle pour les aspects.
+# Classe générant les fichiers modèle pour les types.
 class ControleurGenerateurType:
 
-    # Initialise une nouvelle instance de la classe 'ControleurGenerateurAspect'.
+    # Initialise une nouvelle instance de la classe 'ControleurGenerateurType'.
     # modele Le modele du controleur.
     # vue La vue du controleur.
     def __init__(self, modele: Modele, vue: Vue):
         self.VUE = vue
         self.MODELE = modele
 
-    # Crée les fichiers nécessaires pour les aspects.
+    # Crée les fichiers nécessaires pour les types.
     def creer_fichiers_types(self):
         types = self.MODELE.get_types()
         for type_name in types.keys():
             self.creer_fichier_modele_type(types[type_name])
             self.creer_fichier_helper_type(types[type_name])
 
-    # Crée un fichier modèle pour un aspect.
-    # aspect L'aspect dont on va créer le fichier modèle.
+    # Crée un fichier modèle pour un type.
+    # typ Le type dont on va créer le fichier modèle.
     def creer_fichier_modele_type(self, typ: Type):
-        nom_fichier = self.get_nom_class(typ) + "Modele.java"
+        nom_fichier = self.get_nom_class(typ) + "TypeModele.java"
         chemin = self.get_chemin_dossier_type(typ) + "/" + nom_fichier
 
         self.VUE.creation_fichier(nom_fichier)
@@ -40,7 +40,7 @@ class ControleurGenerateurType:
         fd.write("import org.alfresco.service.namespace.QName;\n\n")
 
         fd.write("/** Classe modèle personnalisée pour le type '" + typ.get_nom_complet() + "'. */\n " +
-                 "public class " + typ.get_nom().capitalize() + "Modele" + " {\n\n ")
+                 "public class " + typ.get_nom().capitalize() + "TypeModele" + " {\n\n ")
 
         fd.write("\t/** Le prefix du type de contenu. */\n"
                  "\tpublic final static String PREFIX = \"" + typ.get_prefix() + "\";\n\n")
@@ -48,7 +48,7 @@ class ControleurGenerateurType:
         fd.write("\t/** L'URI du type de contenu. */\n"
                  "\tpublic final static String URI =  \"" + typ.get_uri() + "\";\n\n")
 
-        fd.write("\t/** Le nom de l'aspect. */\n"
+        fd.write("\t/** Le nom du type. */\n"
                  "\tpublic final static QName NOM = QName.createQName( URI , \"" + typ.get_nom() + "\");\n\n")
 
         for propriete in typ.get_proprietes():
@@ -59,10 +59,10 @@ class ControleurGenerateurType:
 
         self.VUE.succes()
 
-    # Crée un fichier helper modèle pour un aspect.
-    # aspect L'aspect dont on va créer le fichier helper modèle.
+    # Crée un fichier helper modèle pour un type.
+    # typ Le type dont on va créer le fichier helper modèle.
     def creer_fichier_helper_type(self, typ):
-        nom_fichier = self.get_nom_class(typ) + "HelperModele.java"
+        nom_fichier = self.get_nom_class(typ) + "TypeHelperModele.java"
         chemin = self.get_chemin_dossier_type(typ) + "/" + nom_fichier
 
         self.VUE.creation_fichier(nom_fichier)
@@ -75,28 +75,24 @@ class ControleurGenerateurType:
         fd.write("import org.alfresco.service.cmr.repository.NodeService;\n"
                  "import org.alfresco.service.cmr.repository.NodeRef;\n"
                  "import org.alfresco.service.namespace.QName;\n\n"
-                 "import org.example.affichagedesactes.modeles.sources.AlfrescoModeleHelper;\n\n" +
-                 "import java.util.Date;")
+                 "import " + self.MODELE.get_package_modele_sources() + ".AlfrescoModeleHelper;\n\n" +
+                 "import java.util.Date;\n\n")
 
-        fd.write("/** Classe modèle d'aide personnalisée pour l'aspect '" + typ.get_nom_complet() + "'. */\n " +
-                 "public class " + self.get_nom_class(typ) + "HelperModele extends AlfrescoModeleHelper {\n\n ")
+        fd.write("/** Classe modèle d'aide personnalisée pour le type '" + typ.get_nom_complet() + "'. */\n " +
+                 "public class " + self.get_nom_class(typ) + "TypeHelperModele extends AlfrescoModeleHelper {\n\n ")
 
         fd.write("\t/** Initialise une nouvelle instance de la classe {@link " + self.get_nom_class(typ)
-                 + "HelperModele}. \n" +
-                 "\t * @param serviceNoeud Le service de gestion des noeuds d'Alfresco. \n" +
-                 "\t * @param noeud Le noeud de référence. */\n"
-                 "\tpublic " + self.get_nom_class(typ) + "HelperModele(NodeService serviceNoeud, NodeRef noeud){\n" +
-                 "\t\tsuper(serviceNoeud, noeud);\n" +
+                 + "TypeHelperModele}. \n" +
+                 "\t * @param serviceNoeud Le service de gestion des nœuds d'Alfresco. \n" +
+                 "\t * @param noeud Le nœud de référence. */\n"
+                 "\tpublic " + self.get_nom_class(typ) + "TypeHelperModele(NodeService serviceNoeud, NodeRef noeud){"
+                 "\n\t\tsuper(serviceNoeud, noeud);\n" +
                  "\t}\n\n" +
-                 "\t/** Permet de vérifier que le nœud di modèle possède l'aspect désigné en paramètre.\n" +
-                 "\t * @return <c>true</c> si l'aspect est présent, sinon <c>false</c>. */ " +
-                 "\tpublic boolean hasAspect(){ \n" +
-                 "\t\treturn this.hasAspect(" + self.get_nom_class(typ) + "Modele.NOM);\n" +
-                 "\t}\n\n"
-                 "\t/** Supprime un aspect du noeud. \n"                 
-                 "\tpublic void supprimeAspect() { \n"
-                 "\t\tthis.supprimeAspect(this.noeud, " + self.get_nom_class(typ) + "Modele.NOM); \n"
-                 "}\n\n")
+                 "\t/** Permet de vérifier que le nœud du modèle possède l'aspect désigné en paramètre.\n" +
+                 "\t * @return <c>true</c> si l'aspect est présent, sinon <c>false</c>. */ \n" +
+                 "\tpublic boolean hasType(){ \n" +
+                 "\t\treturn this.hasType(" + self.get_nom_class(typ) + "TypeModele.NOM);\n" +
+                 "\t}\n\n")
 
         a_propriete_mandatory = False
 
@@ -159,7 +155,7 @@ class ControleurGenerateurType:
     def get_methode_getter(self, typ: Type, propriete: Propriete):
         prop_type = propriete.get_type()
         prop_nom_entier = typ.get_nom_complet()
-        prop_modele = self.get_nom_class(typ) + "Modele." + propriete.get_nom().upper()
+        prop_modele = self.get_nom_class(typ) + "TypeModele." + propriete.get_nom().upper()
 
         return "\t/** Méthode permettant de récupérer la valeur de la propriété '" + prop_nom_entier + "'. \n" + \
                "\t * @return " + prop_type + " La valeur de la propriété '" + prop_nom_entier + "'.  */\n" + \
@@ -174,7 +170,7 @@ class ControleurGenerateurType:
     def get_methode_setter(self, typ: Type, propriete: Propriete):
         prop_type = propriete.get_type()
         prop_nom_entier = typ.get_nom_complet()
-        prop_modele = self.get_nom_class(typ) + "Modele." + propriete.get_nom().upper()
+        prop_modele = self.get_nom_class(typ) + "TypeModele." + propriete.get_nom().upper()
 
         return "\t/** Méthode permettant de récupérer la valeur de la propriété '" + prop_nom_entier + "'. \n" + \
                "\t * @param valeur La nouvelle valeur de la propriété '" + prop_nom_entier + "'." + \
@@ -211,6 +207,8 @@ class ControleurGenerateurType:
 
         return resultat
 
+    # Permet de récupérer la méthode permettant de vérifier la validité du type.
+    # typ Le type dont on souhaite récupérer la méthode de validité.
     @staticmethod
     def get_aspect_methode_validite(typ: Type):
         re = "\t/** Méthode permettant de vérifier la validité de l'aspect '" + typ.get_nom_complet() + "'. \n" + \

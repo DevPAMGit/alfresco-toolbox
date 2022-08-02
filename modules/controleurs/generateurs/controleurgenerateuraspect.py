@@ -75,28 +75,35 @@ class ControleurGenerateurAspect:
         fd.write("import org.alfresco.service.cmr.repository.NodeService;\n"
                  "import org.alfresco.service.cmr.repository.NodeRef;\n"
                  "import org.alfresco.service.namespace.QName;\n\n"
-                 "import org.example.affichagedesactes.modeles.sources.AlfrescoModeleHelper;\n" +
-                 "import java.util.Date;\n\n")
+                 "import " + self.MODELE.get_package_modele_sources() + ".AlfrescoModeleHelper;\n\n" +
+                 "import java.io.Serializable;\n"
+                 "import java.util.Date;\n"
+                 "import java.util.Map;\n\n")
 
         fd.write("/** Classe modèle d'aide personnalisée pour l'aspect '" + aspect.get_nom_complet() + "'. */\n " +
                  "public class " + self.get_nom_class(aspect) + "AspectHelperModele extends AlfrescoModeleHelper {\n\n ")
 
         fd.write("\t/** Initialise une nouvelle instance de la classe {@link " + self.get_nom_class(aspect)
                  + "AspectHelperModele}. \n" +
-                 "\t * @param serviceNoeud Le service de gestion des noeuds d'Alfresco. \n" +
-                 "\t * @param noeud Le noeud de référence. */\n"
+                 "\t * @param serviceNoeud Le service de gestion des nœuds d'Alfresco. \n" +
+                 "\t * @param noeud Le nœud de référence. */\n"
                  "\tpublic " + self.get_nom_class(aspect) +
                  "AspectHelperModele(NodeService serviceNoeud, NodeRef noeud){\n" +
                  "\t\tsuper(serviceNoeud, noeud);\n" +
                  "\t}\n\n" +
-                 "\t/** Permet de vérifier que le nœud di modèle possède l'aspect désigné en paramètre.\n" +
+                 "\t/** Permet de vérifier que le nœud du modèle possède l'aspect désigné en paramètre.\n" +
                  "\t * @return <c>true</c> si l'aspect est présent, sinon <c>false</c>. */ \n" +
                  "\tpublic boolean hasAspect(){ \n" +
                  "\t\treturn this.hasAspect(" + self.get_nom_class(aspect) + "AspectModele.NOM);\n" +
                  "\t}\n\n"
-                 "\t/** Supprime un aspect du noeud. */\n"                 
+                 "\t/** Supprime un aspect du nœud. */\n"                 
                  "\tpublic void supprimeAspect() { \n"
                  "\t\tthis.supprimeAspect(this.noeud, " + self.get_nom_class(aspect) + "AspectModele.NOM); \n"
+                 "\t}\n\n"
+                 "\t/** Ajoute un aspect à un nœud.\n"
+                 "\t * @param valeurs Les valeurs de l'aspect à sa création. */\n" +
+                 "\tpublic void addAspect(Map<QName,Serializable> valeurs) {\n"
+                 "\t\tthis.addAspect(this.noeud, " + self.get_nom_class(aspect) + "AspectModele.NOM, valeurs);\n;"
                  "\t}\n\n")
 
         a_propriete_mandatory = False
@@ -178,8 +185,7 @@ class ControleurGenerateurAspect:
         prop_modele = self.get_nom_class(aspect) + "AspectModele." + propriete.get_nom().upper()
 
         return "\t/** Méthode permettant de récupérer la valeur de la propriété '" + prop_nom_entier + "'. \n" + \
-               "\t * @param valeur La nouvelle valeur de la propriété '" + prop_nom_entier + "'." + \
-               "\t * @return " + prop_type + " a valeur de la propriété '" + prop_nom_entier + "'.  */\n" + \
+               "\t * @param valeur La nouvelle valeur de la propriété '" + prop_nom_entier + "'. */ \n" + \
                "\tpublic void set" + propriete.get_nom().capitalize() + "(" + prop_type + " valeur) { \n" + \
                "\t\tthis.majPropriete(" + prop_modele + ", valeur);\n" + \
                "\t}\n\n"

@@ -14,14 +14,14 @@ public class AlfrescoModeleHelper extends AlfrescoHelper {
 	protected final NodeRef noeud;
 
 	/** Initialise une nouvelle instance de la classe {@link AlfrescoModeleHelper}.
-	* @param serviceNoeud Le service de gestion des noeuds d'Alfresco.
-	* @param noeud Le noeud de référence. */
+	* @param serviceNoeud Le service de gestion des nœuds d'Alfresco.
+	* @param noeud Le nœud de référence. */
 	public AlfrescoModeleHelper(NodeService serviceNoeud, NodeRef noeud) {
 		super(serviceNoeud);
 		this.noeud = noeud;
 	}
 
-	/** Permet de vérifier que le nœud di modèle possède l'aspect désigné en paramètre.
+	/** Permet de vérifier que le nœud du modèle possède l'aspect désigné en paramètre.
 	* @param aspect L'aspect dont on souhaite vérifier la présence.
 	* @return <c>true</c> si l'aspect est présent, sinon <c>false</c>. */
 	public boolean hasAspect(QName aspect){
@@ -43,7 +43,7 @@ public class AlfrescoModeleHelper extends AlfrescoHelper {
 
 	/** Vérifie si le nœud du modèle est du type en en paramètre.
 	* @param type Le type de nœud attendu.
-	* return <c>true</c> si le nœud est du type en paramètre sinon <c>false</c>.*/
+	* return <c>true</c> si le nœud est du type en paramètre sinon <c>false</c>. */
 	public boolean hasType(QName type) {
 		return this.hasType(this.noeud, type);
 	}
@@ -62,18 +62,18 @@ public class AlfrescoModeleHelper extends AlfrescoHelper {
 	}
 
 	/** Modifie la valeur d'une propriété du nœud modèle nœud.
-	* @param propriete La propriété dont on souhaite modifier la valeur.*/
+	 * @param propriete La propriété dont on souhaite modifier la valeur. */
 	public void majPropriete(QName propriete, Serializable valeur){
 		this.majPropriete(this.noeud, propriete, valeur);
 	}
 
-	/** Modifie la valeur d'une propriété du nœud modèle .
+	/** Modifie la valeur d'une propriété du nœud modèle.
 	* @param valeurs La propriété dont on souhaite modifier la valeur. */
 	public void majProprietes(Map<QName, Serializable> valeurs){
 		this.majProprietes(this.noeud, valeurs);
 	}
 
-	/** Permet de récupérer le nœud parent au noeud modèle.
+	/** Permet de récupérer le nœud parent au nœud modèle.
 	* @return Une instance de type {@link NodeRef} représentant le parent du nœud parent. */
 	public NodeRef getNoeudParent(){
 		return this.getNoeudParent(this.noeud);
