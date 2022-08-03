@@ -95,7 +95,7 @@ public class AlfrescoHelper {
 	* @param noeud Le nœud dont on souhaite récupérer l'ancêtre'.
 	* @param generation La génération antérieure à laquelle on souhaite accéder.
 	* @return Une instance de type {@link NodeRef} représentant l'ancêtre nœud en paramètre. */
-	protected NodeRef obtenirAncetre(NodeRef noeud, int generation) {
+	protected NodeRef getAncetre(NodeRef noeud, int generation) {
 		NodeRef ancetre = noeud;
 		for (int i=0; i<generation; i++)
 			ancetre = this.getNoeudParent(ancetre);
@@ -105,11 +105,48 @@ public class AlfrescoHelper {
 	/** Permet d'obtenir la liste des nœuds contenus dans le nœud en paramètre.
 	* @param noeud Le nœud dont on veut récupérer le contenu.
 	* @return La liste des nœuds contenue dans le nœud. */
-	protected List<NodeRef> obtenirContenu(NodeRef noeud) {
+	protected List<NodeRef> getContenu(NodeRef noeud) {
 		ArrayList<NodeRef> noeuds = new ArrayList<>();
 		for(ChildAssociationRef child : this.serviceNoeud.getChildAssocs(noeud))
 			noeuds.add(child.getChildRef());
 		return noeuds;
+	}
+
+	/** Permet de rechercher un nœud par son nom dans un autre nœud fournit en paramètre.
+	 * @param noeud Le nœud dans lequel on recherchera l'enfant.
+	 * @param type Le type du nœud rechercher.
+	 * @param nom Le nom du nœud à rechercher.
+	 * @return NodeRef Le nœud avec le nom indiqué en paramètre ou null. */
+	public NodeRef searchNoeudDossierParNom(NodeRef noeud, QName type, String nom) {
+		return this.serviceNoeud.getChildByName(noeud, type, nom);
+	}
+
+	/** Permet de créer un dossier dans un nœud mis en paramètres s'il n'existe pas.
+	 * @param noeud Le nœud dans lequel on va créer le dossier.
+	 * @param nom Le nom du dossier.
+	 * @return NodeRef Le nouveau nœud créer. */
+	protected NodeRef creerDossier(NodeRef noeud, String nom) {
+		NodeRef resultat = this.searchNoeudDossierParNom(noeud, ContentModel.TYPE_FOLDER, nom);
+		if( resultat == null )
+			resultat = this.serviceNoeud.createNode(noeud, ContentModel.ASSOC_CHILDREN, QName.createQName(nom),
+					ContentModel.TYPE_FOLDER).getChildRef();
+		return resultat;
+	}
+
+	/** Permet de créer un dossier dans un nœud mis en paramètres s'il n'existe pas avec des métadonnées.
+	 * @param noeud Le nœud dans lequel on va créer le dossier.
+	 * @param nom Le nom du dossier.
+	 * @param metadonnees Les métadonnées du nouveau nœud.
+	 * @return NodeRef Le nouveau nœud créer. */
+	protected NodeRef creerDossierAvecDonnees(NodeRef noeud, String nom, Map<QName, Serializable> metadonnees) {
+		NodeRef resultat = this.searchNoeudDossierParNom(noeud, ContentModel.TYPE_FOLDER, nom);
+		if( resultat == null )
+			resultat = this.serviceNoeud.createNode(noeud, ContentModel.ASSOC_CHILDREN, QName.createQName(nom),
+					ContentModel.TYPE_FOLDER).getChildRef();
+
+		this.majProprietes(resultat, metadonnees);
+
+		return resultat;
 	}
 
 }

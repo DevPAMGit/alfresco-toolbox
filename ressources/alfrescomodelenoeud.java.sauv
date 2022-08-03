@@ -82,14 +82,37 @@ public class AlfrescoModeleHelper extends AlfrescoHelper {
 	/** Permet de récupérer un ancêtre du nœud du modèle.
 	* @param generation La génération antérieure à laquelle on souhaite accéder.
 	* @return Une instance de type {@link NodeRef} représentant l'ancêtre nœud du modèle. */
-	public NodeRef obtenirAncetre(int generation) {
-		return  this.obtenirAncetre(this.noeud, generation);
+	public NodeRef getAncetre(int generation) {
+		return  this.getAncetre(this.noeud, generation);
 	}
 
 	/** Permet d'obtenir la liste des nœuds contenus dans le nœud du modèle.
 	* @return La liste des nœuds contenue dans le nœud. */
-	public List<NodeRef> obtenirContenu() {
-		return this.obtenirContenu(this.noeud);
+	public List<NodeRef> getContenu() {
+		return this.getContenu(this.noeud);
+	}
+
+	/** Permet de rechercher un nœud par son nom dans le nœud modèle.
+	 * @param type Le type du nœud rechercher.
+	 * @param nom Le nom du nœud à rechercher.
+	 * @return NodeRef Le nœud avec le nom indiqué en paramètre ou null. */
+	public NodeRef searchNoeudDossierParNom(QName type, String nom) {
+		return this.serviceNoeud.getChildByName(this.noeud, type, nom);
+	}
+
+	/** Permet de créer un dossier dans un nœud modèle s'il n'existe pas.
+	 * @param nom Le nom du dossier.
+	 * @return NodeRef Le nouveau nœud créer. */
+	public NodeRef creerDossier(String nom) {
+		return this.creerDossier(this.noeud, nom);
+	}
+
+	/** Permet de créer un dossier dans un nœud en modèle s'il n'existe pas avec des métadonnées.
+	 * @param nom Le nom du dossier.
+	 * @param metadonnees Les métadonnées du nouveau nœud.
+	 * @return NodeRef Le nouveau nœud créer. */
+	public NodeRef creerDossierAvecDonnees(String nom, Map<QName, Serializable> metadonnees) {
+		return this.creerDossierAvecDonnees(this.noeud, nom, metadonnees);
 	}
 
 }
