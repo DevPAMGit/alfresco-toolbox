@@ -88,7 +88,7 @@ public class AlfrescoModeleHelper extends AlfrescoHelper {
 
 	/** Permet d'obtenir la liste des nœuds contenus dans le nœud du modèle.
 	* @return La liste des nœuds contenue dans le nœud. */
-	protected List<NodeRef> obtenirContenu() {
+	public List<NodeRef> obtenirContenu() {
 		return this.obtenirContenu(this.noeud);
 	}
 
