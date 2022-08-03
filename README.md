@@ -16,8 +16,8 @@ Par exemple pour un projet Alfresco  *All-in-One* composé de ces données:
 Le script génèrera l'arborescence _java_ ci-dessous:
 ```
 .
-├── org.cd59
-│   └── affichagedesactes.modeles
+└── org.cd59
+    └── affichagedesactes.modeles
         └── sources
         └── typescontenus.acme
             ├── aspects
@@ -27,5 +27,8 @@ Le script génèrera l'arborescence _java_ ci-dessous:
             └── types
                 └── document
                     └── DocumentTypeHelperModele.java
-                    └── DocumentTypele.java
+                    └── DocumentTypeModele.java
 ```
+
+Chaque classe type et aspect dépende de la classe *AlfrescoModeleHelper* qui dépend de la classe *AlfrescoHelper*,
+elles aussi générées grâce au script.
