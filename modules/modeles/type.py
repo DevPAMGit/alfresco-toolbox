@@ -9,8 +9,12 @@ class Type:
         self.PROPRIETES = []
         self.DESCRIPTION = None
         self.NOM_COMPLET = nom_complet
+        self.PARENT: (str | None) = None
         self.PREFIX = nom_complet[0: nom_complet.rindex(":")]
         self.NOM = nom_complet[nom_complet.rindex(":") + 1:len(nom_complet)]
+
+    def set_parent(self, parent):
+        self.PARENT = parent
 
     # Récupère le nom du type.
     # Retourne le nom du type.

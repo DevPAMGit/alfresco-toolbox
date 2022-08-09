@@ -1,4 +1,3 @@
-
 # Modèle du script.
 class Modele:
     # Initialize une nouvelle instance de la classe 'Modele'.
@@ -43,6 +42,7 @@ class Modele:
     # Modifie le chemin vers le projet.
     # chemin Le chemin vers le projet.
     def set_chemin_projet(self, chemin):
+        print("SET CHEMIN_PROJET " + chemin)
         self.CHEMIN = chemin
 
     # Récupère la valeur du chemin du projet.
@@ -78,3 +78,12 @@ class Modele:
     def get_types(self):
         return self.TYPES
 
+    def get_chemin_config_custom_fichier(self) -> str:
+        """
+        Methode permettant de récupérer le chemin vers le fichier "share-config-custom.xml" du projet.;
+        :return: Le chemin vers le fichier "share-config-custom.xml" du projet.
+        """
+        print(self.CHEMIN)
+        return self.CHEMIN + "/" + \
+               self.ARTIFACT_ID + \
+               "-share/src/main/resources/META-INF/share-config-custom.xml"

@@ -5,6 +5,7 @@ from os import path
 from modules.controleurs.controleurdonnees import ControleurDonnees
 from modules.controleurs.generateurs.controleurgenerateur import ControleurGenerateur
 from modules.controleurs.generateurs.controleurgenerateuraspect import ControleurGenerateurAspect
+from modules.controleurs.generateurs.controleurgenerateurshare import ControleurGenerateurShare
 from modules.controleurs.generateurs.controleurgenerateurtype import ControleurGenerateurType
 from modules.modeles.modele import Modele
 from modules.vue.vue import Vue
@@ -21,6 +22,7 @@ class Controleur:
         self.GENERATEUR_GENERAL = ControleurGenerateur(self.MODELE, self.VUE)
         self.GENERATEUR_TYPES = ControleurGenerateurType(self.MODELE, self.VUE)
         self.GENERATEUR_ASPECTS = ControleurGenerateurAspect(self.MODELE, self.VUE)
+        self.CONTROLEUR_SHARE = ControleurGenerateurShare(self.MODELE, self.VUE)
 
     # Génère les fichiers modèles du projet.
     # chemin Le chemin vers
@@ -37,6 +39,7 @@ class Controleur:
             exit()
 
         self.generer_fichiers()
+        self.CONTROLEUR_SHARE.maj_share_config_custom(self.MODELE.get_aspects(), self.MODELE.get_types())
 
     # Vérifie que le chemin mis en paramètre est un dossier 'maven'.
     # chemin Le chemin vers le dossier maven 'Alfresco'.

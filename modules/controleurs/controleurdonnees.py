@@ -151,10 +151,18 @@ class ControleurDonnees:
             if not nom_parent == "cm:folder" and not nom_parent == "cm:content":
                 self.VUE.chargement_proprietes_parent(parent.text)
                 for propriete in self.get_aspect_proprietes(xmlns, aspects, parent.text):
-                    print("HERE")
+
                     self.VUE.chargement_propriete(propriete.get_nom_complet())
                     asp.add_propriete(propriete)
                     self.VUE.succes()
+
+                asp.set_parent(self.get_parent_ancetre(parent.text))
+
+            else:
+                asp.set_parent(nom_parent)
+        else:
+            asp.set_parent("cm:content")
+
 
     @staticmethod
     def charger_type(valeur):
@@ -201,6 +209,22 @@ class ControleurDonnees:
             return asps[nom_aspect].get_proprietes()
 
         self.charge_aspect(xmlns, aspects, aspects.find(xmlns + "aspect[@name='" + nom_aspect + "']"))
+
+    def get_parent_ancetre(self, nom_aspect: str):
+        """
+        Get the
+        :param nom_aspect:
+        :return:
+        """
+
+        if nom_aspect.__eq__("cm:folder") or nom_aspect.__eq__("cm:content"):
+            return nom_aspect
+
+        asps = self.MODELE.get_aspects()
+        if nom_aspect in asps:
+            return self.get_parent_ancetre(asps[nom_aspect].PARENT)
+
+        return None
 
     # Méthode permettant de charger le titre d'un type ou d'un aspect.
     # noeud_titre Le noeud XML contenant la valeur du titre.

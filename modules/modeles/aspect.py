@@ -12,6 +12,10 @@ class Aspect:
         self.NOM_COMPLET = nom_complet
         self.PREFIX = nom_complet[0: nom_complet.rindex(":")]
         self.NOM = nom_complet[nom_complet.rindex(":") + 1:len(nom_complet)]
+        self.PARENT = None
+
+    def set_parent(self, parent):
+        self.PARENT = parent
 
     # Récupère le nom de l'aspect.
     # Retourne le nom de l'aspect.
