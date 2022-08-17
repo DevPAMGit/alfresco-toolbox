@@ -123,3 +123,19 @@ class Vue:
         message = "\n" + self.ACTION + "Nettoyage du POM du projet."
         self.PREVIOUS = len(message)
         print(message, end="")
+
+    def info(self, message):
+        """
+        Message permettant d'imprimer sur la sortie standard une information. ;
+        :param message: Le message à imprimer sur la sortie standard. ;
+        """
+        print("\n" + self.INFO + "Création des fichiers aspects.")
+
+    def action(self, message):
+        """
+        Message permettant d'imprimer sur la sortie standard une action. ;
+        :param message : Le message à imprimer sur la sortie standard. ;
+        """
+        a_imprimer = self.ACTION + message
+        self.PREVIOUS = len(a_imprimer)
+        print(a_imprimer, end="")

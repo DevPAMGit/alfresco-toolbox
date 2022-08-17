@@ -1,4 +1,7 @@
 # Modèle du script.
+import os
+
+
 class Modele:
     # Initialize une nouvelle instance de la classe 'Modele'.
     # vue La vue du script.
@@ -87,3 +90,23 @@ class Modele:
         return self.CHEMIN + "/" + \
                self.ARTIFACT_ID + \
                "-share/src/main/resources/META-INF/share-config-custom.xml"
+
+    @staticmethod
+    def get_chemin_ressources():
+        return os.getcwd() + "/ressources"
+
+    def obt_chemin_fichier_action_context(self) -> str:
+        """
+        Récupère le chemin vers le fichier 'action-context'. ;
+        :return: Le chemin vers le fichier 'action-context'. ;
+        """
+        return self.CHEMIN + "/" + self.ARTIFACT_ID + "-platform/src/main/resources/alfresco/module/" \
+               + self.ARTIFACT_ID + "-platform/context/action-context.xml"
+
+    def obt_chemin_dossier_classes_actions(self) -> str:
+        """
+        Récupère le chemin vers le dossier des classes d'actions. ;
+        :return: Le chemin vers le dossier des classes d'actions.
+        """
+        return self.CHEMIN + "/" + self.ARTIFACT_ID + "-platform/src/main/java/" + self.GROUP_ID.replace(".", "/") \
+               + "/" + self.ARTIFACT_ID.replace("-", "") + "/actions"

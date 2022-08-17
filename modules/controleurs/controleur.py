@@ -4,6 +4,7 @@ from os import path
 
 from modules.controleurs.controleurdonnees import ControleurDonnees
 from modules.controleurs.generateurs.controleurgenerateur import ControleurGenerateur
+from api.action.actioncontroleur import ActionControleur
 from modules.controleurs.generateurs.controleurgenerateuraspect import ControleurGenerateurAspect
 from modules.controleurs.generateurs.controleurgenerateurshare import ControleurGenerateurShare
 from modules.controleurs.generateurs.controleurgenerateurtype import ControleurGenerateurType
@@ -11,11 +12,15 @@ from modules.modeles.modele import Modele
 from modules.vue.vue import Vue
 
 
-# Le controleur du script.
 class Controleur:
+    """
+    Le controleur du script.
+    """
 
-    # Initialise une nouvelle instance de la classe 'Controleur'.
     def __init__(self):
+        """
+        Initialise une nouvelle instance de la classe 'Controleur'.
+        """
         self.VUE = Vue()
         self.MODELE = Modele()
         self.CONTROLEUR_DONNEES = ControleurDonnees(self.VUE, self.MODELE)
@@ -23,6 +28,8 @@ class Controleur:
         self.GENERATEUR_TYPES = ControleurGenerateurType(self.MODELE, self.VUE)
         self.GENERATEUR_ASPECTS = ControleurGenerateurAspect(self.MODELE, self.VUE)
         self.CONTROLEUR_SHARE = ControleurGenerateurShare(self.MODELE, self.VUE)
+
+        self.CONTROLEUR_ACTION = ActionControleur(self.MODELE, self.VUE)
 
     # Génère les fichiers modèles du projet.
     # chemin Le chemin vers
@@ -40,6 +47,7 @@ class Controleur:
 
         self.generer_fichiers()
         self.CONTROLEUR_SHARE.maj_share_config_custom(self.MODELE.get_aspects(), self.MODELE.get_types())
+        self.CONTROLEUR_ACTION.controler()
 
     # Vérifie que le chemin mis en paramètre est un dossier 'maven'.
     # chemin Le chemin vers le dossier maven 'Alfresco'.
@@ -80,6 +88,9 @@ class Controleur:
 
     # Méthode permettant de générer les fichiers du projet.
     def generer_fichiers(self):
+        """
+        Génère les fichiers du projet.
+        """
         self.VUE.creation_fichier_generaux()
         self.GENERATEUR_GENERAL.creer_service_noeud()
         self.GENERATEUR_GENERAL.creer_noeud_modele()
@@ -89,6 +100,10 @@ class Controleur:
         self.GENERATEUR_TYPES.creer_fichiers_types()
 
     def nettoyage_pom(self, chemin_pom):
+        """
+        Méthode permettant de nettoyer le pom. ;
+        :param chemin_pom : Le chemin vers le pom. ;
+        """
         self.VUE.nettoyage_pom()
 
         fd = codecs.open(chemin_pom, "r", "utf-8")

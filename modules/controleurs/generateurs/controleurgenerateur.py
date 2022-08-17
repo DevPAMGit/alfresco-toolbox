@@ -52,3 +52,12 @@ class ControleurGenerateur:
     def get_chemin_modele_noeud():
         chemin = os.path.realpath(__file__)
         return chemin[0:chemin.rindex("\\") + 1] + "../../../ressources/alfrescomodelenoeud.java.sauv"
+
+    @staticmethod
+    def obt_chemin_modele_fichier_action():
+        """
+        Méthode permettant de récupérer le chemin vers le fichier modèle 'action-context.xml'
+        :return:
+        """
+        chemin = os.path.realpath(__file__)
+        return chemin[0:chemin.rindex("\\") + 1] + "../../../ressources/alfrescoactions.xml.sauv"

@@ -1,0 +1,6 @@
+[submodule "libs/pythonconsolevue"]
+	path = libs/pythonconsolevue
+	url = https://github.com/DevPAMGit/pythonconsolevue.git
+[submodule "libs/pythonsimpleinterpreter"]
+	path = libs/pythonsimpleinterpreter
+	url = https://github.com/DevPAMGit/pythonsimpleinterpreter.git
