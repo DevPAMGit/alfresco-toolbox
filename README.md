@@ -7,7 +7,7 @@ Il faut au préalable avoir déclarés des types de contenus et les avoir insér
 Ensuite, ce script va lire dans ce fichier les éléments déclarés dans comme modèles. 
 Et pour chacun il créera les fichiers _.java_ pour chaque **aspects** et **types** déclarés dans chaque fichier modèle.
 
-Par exemple pour un projet Alfresco  *All-in-One* composé de ces données:
+Par exemple pour un projet Alfresco *All-in-One* composé de ces données :
 
 | organisation | artifact id  | nom modèle | type | aspect
 |--|--|--|--|--|
@@ -76,7 +76,7 @@ avec deux sont seulement modifiés) :
 
 ```
 affichage-des-actes
-└── affichage-des-actes-platform
+└── affichage-des-actes-platformcd
     └── src.action
         └── main
             ├── java
