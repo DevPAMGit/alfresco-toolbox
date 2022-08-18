@@ -1,65 +1,49 @@
-import codecs
-import re
-from abc import ABC, abstractmethod
-from xml.dom import minidom
-from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
+from api.generale.controleurgenerale import ControleurGenerale
 from libs.pythonconsolevue.consolevue import ConsoleVue
+from api.generale.modelegenerale import ModeleGenerale
 
 
-class ControleurGenerale(ABC):
-    """
-    Controleur générale pour toute les apis du script.
-    """
+class ControleurSecondaire(ControleurGenerale):
 
-    def __init__(self, vue: ConsoleVue):
-        """
-        Initialise une nouvelle instance de la classe 'ActionControleur'. ;
-        """
-        self.VUE = vue
+    def __init__(self, vue: ConsoleVue, modele: ModeleGenerale):
+        super().__init__(vue)
+        self.MODELE = modele
 
-    @abstractmethod
     def maj_artifact_id(self, artifact_id: str):
         """
         Met à jour la valeur du paramètre de classe du modèle __ARTIFACT_ID__.;
         :param artifact_id : La nouvelle valeur du paramètre de classe du modèle  __ARTIFACT_ID__. ;
         """
-        pass
+        self.MODELE.maj_artifact_id(artifact_id)
 
-    @abstractmethod
     def maj_chemin_projet(self, chemin_projet: str):
         """
         Met à jour la valeur du paramètre de classe du modèle __CHEMIN_ID__. ;
         :param chemin_projet : La nouvelle valeur du paramètre de classe du modèle  __CHEMIN_ID__. ;
         """
-        pass
+        self.MODELE.maj_chemin_projet(chemin_projet)
 
-    @abstractmethod
     def maj_group_id(self, group_id: str):
         """
         Met à jour la valeur du paramètre de classe du modèle  __GROUP_ID__. ;
         :param group_id : La nouvelle valeur du paramètre de classe du modèle __GROUP_ID__. ;
         """
-        pass
+        self.MODELE.maj_group_id(group_id)
 
-    @abstractmethod
     def maj_chemin_dossier_ressources(self, chemin_dossier_ressource: str):
         """
         Met à jour la valeur du paramètre de classe __CHEMIN_DOSSIER_RESOURCE__. ;
         :param chemin_dossier_ressource : La nouvelle valeur du paramètre de classe __CHEMIN_DOSSIER_RESOURCE__. ;
         """
-        pass
+        self.MODELE.maj_chemin_dossier_ressources(chemin_dossier_ressource)
 
     @staticmethod
-    def ecrire_xml(chemin: str, racine: Element):
+    def obt_xmlns(racine: Element) -> str:
         """
-        Écrit un fichier XML. ;
-        :param chemin : Le chemin vers ce fichier XML. ;
-        :param racine : La racine du noeud. ;
+        Méthode permettant de récupérer le 'xmlns" de la racine d'un XML. ;
+        :param racine: La racine d'un fichier XML. ;
+        :return: Une chaîne de caractère
         """
-        fd = codecs.open(chemin, "w", "utf-8")
-
-        fd.write(re.sub("\\n\\s*\\n", "\\n",
-                        minidom.parseString(ElementTree.tostring(racine, "utf-8")).toprettyxml(indent="\t")))
-        fd.close()
+        return racine.tag[0: racine.tag.rindex("}") + 1]

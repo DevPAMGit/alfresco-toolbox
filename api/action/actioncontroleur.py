@@ -4,15 +4,15 @@ import codecs
 import os
 from xml.etree.ElementTree import Element
 
-from api.action.actionconsolevue import ActionConsoleVue
 from api.action.actionmodele import ActionModele
 from api.action.modele.champinfomodele import ChampInfoModele
 from api.action.modele.classeinfomodele import ClasseInfoModele
-from api.generale.controleurgenerale import ControleurGenerale
-from api.generale.exception.actionexception import CustomException
+from api.generale.controleursecondaire import ControleurSecondaire
+from api.generale.exception.exceptionpersonnalisee import ExceptionPersonnalisee
+from libs.pythonconsolevue.consolevue import ConsoleVue
 
 
-class ActionControleur(ControleurGenerale):
+class ActionControleur(ControleurSecondaire):
     """
     Classe permettant de gérer les actions d'un projet Alfresco.
     """
@@ -20,38 +20,10 @@ class ActionControleur(ControleurGenerale):
     def __init__(self, maximum: int):
         """
         Initialise une nouvelle instance de la classe 'ActionControleur'.
-        :param maximum:
+        :param maximum: La largeur maximum (en caractère) de la vue.
         """
-        super().__init__(ActionConsoleVue(maximum))
-        self.MODELE = ActionModele()
-
-    def maj_artifact_id(self, artifact_id: str):
-        """
-        Met à jour la valeur du paramètre de classe du modèle __ARTIFACT_ID__.;
-        :param artifact_id : La nouvelle valeur du paramètre de classe du modèle  __ARTIFACT_ID__. ;
-        """
-        self.MODELE.maj_artifact_id(artifact_id)
-
-    def maj_chemin_projet(self, chemin_projet: str):
-        """
-        Met à jour la valeur du paramètre de classe du modèle __CHEMIN_ID__. ;
-        :param chemin_projet : La nouvelle valeur du paramètre de classe du modèle  __CHEMIN_ID__. ;
-        """
-        self.MODELE.maj_chemin_projet(chemin_projet)
-
-    def maj_group_id(self, group_id: str):
-        """
-        Met à jour la valeur du paramètre de classe du modèle  __GROUP_ID__. ;
-        :param group_id : La nouvelle valeur du paramètre de classe du modèle __GROUP_ID__. ;
-        """
-        self.MODELE.maj_group_id(group_id)
-
-    def maj_chemin_dossier_ressources(self, chemin_dossier_ressource: str):
-        """
-        Met à jour la valeur du paramètre de classe __CHEMIN_DOSSIER_RESOURCE__. ;
-        :param chemin_dossier_ressource : La nouvelle valeur du paramètre de classe __CHEMIN_DOSSIER_RESOURCE__. ;
-        """
-        self.MODELE.maj_chemin_dossier_ressources(chemin_dossier_ressource)
+        super().__init__(ConsoleVue(maximum), ActionModele())
+        self.MODELE.__class__ = ActionModele
 
     def __maj_fichier_context_action__(self):
         """
@@ -155,14 +127,16 @@ class ActionControleur(ControleurGenerale):
             for t1, t2 in match_parametres:
                 self.VUE.action("Gestion du champ '" + t2 + "'")
                 champ: ChampInfoModele = ChampInfoModele()
+                champ.NOM = t2
 
                 match_param = re.search(
-                    "// @label ([^;]+);\\s*(private|public)\\s+static\\s+final\\s+[^\\s]+\\s+[^\\s]+\\s+=\\s+\"" +
+                    "// @label ([^;]+);\\s*(private|public)\\s+static\\s+final\\s+\\S+\\s+\\S+\\s+=\\s+\"" +
                     t2 + "\"\\s*;", contenu_fichier)
 
                 if match_param is not None:
-                    resultat.append(match_param.group(1))
+                    champ.LABEL = match_param.group(1)
 
+                resultat.append(champ)
                 self.VUE.succes(None)
 
         return resultat
@@ -170,7 +144,7 @@ class ActionControleur(ControleurGenerale):
     def __extraire_utilisation_registre_service(self, contenu_fichier: str) -> (bool, str):
         self.VUE.action("Extraction de l'utilisation du registre des services.")
 
-        match_description_service = re.search("(private|public)\\s+ServiceRegistry\\s+([^\\s]+).*", contenu_fichier)
+        match_description_service = re.search("(private|public)\\s+ServiceRegistry\\s+(\\S+).*", contenu_fichier)
 
         if match_description_service is None:
             resultat: bool = False
@@ -213,7 +187,7 @@ class ActionControleur(ControleurGenerale):
         match_nom_classe = re.search(".* class\\s+(\\S+)\\s+extends\\s+ActionExecuterAbstractBase .*", contenu_fichier)
 
         if match_nom_classe is None:
-            raise CustomException("Aucun nom de classe trouvé!")
+            raise ExceptionPersonnalisee("Aucun nom de classe trouvé!")
 
         self.VUE.succes(None)
         self.VUE.info("classe '" + match_nom_classe.group(1) + "'")
@@ -230,7 +204,7 @@ class ActionControleur(ControleurGenerale):
 
         match_package = re.search(".*package\\s+([^;]+)\\s*;", contenu_fichier)
         if match_package is None:
-            raise CustomException("Aucun package trouvé!")
+            raise ExceptionPersonnalisee("Aucun package trouvé!")
 
         self.VUE.succes(None)
         self.VUE.info("package '" + match_package.group(1) + "'")
@@ -245,7 +219,7 @@ class ActionControleur(ControleurGenerale):
 
         ElementTree.register_namespace('', "http://www.springframework.org/schema/beans")
         racine = ElementTree.parse(self.MODELE.obt_chemin_fichier_module_context()).getroot()
-        xmlns = racine.tag[0:racine.tag.rindex("}") + 1]
+        xmlns = self.obt_xmlns(racine)
 
         importation: Element = racine.find(".//" + xmlns + "import[@resource='classpath:alfresco/module/"
                                                            "${project.artifactId}/context/action-context.xml']")
@@ -282,20 +256,6 @@ class ActionControleur(ControleurGenerale):
         # Création du fichier 'action_context' s'il n'existe pas.
         if not os.path.exists(chemin_fichier_action_context):
             self.__init_action_context__()
-
-        # racine = ElementTree.parse(chemin_fichier_action_context).getroot()
-
-        # Ajout du noeud d'action.
-        # for contenu in os.listdir(chemin_dossiers_classes_actions):
-        # noeud: Element = self.__recuperer_bean_action__(racine, chemin_dossiers_classes_actions + "/" + contenu)
-        # self.VUE.action("Ajout du noeud bean à la racine")
-        # racine.append(noeud)
-        # self.VUE.succes(None)
-
-        # fd = codecs.open(chemin_fichier_action_context, "w", "utf-8")
-        # fd.write(re.sub("\\n\\s*\\n", "\\n",
-        #                 minidom.parseString(ElementTree.tostring(racine, "utf-8")).toprettyxml(indent="\t")))
-        # fd.close()
 
     def __init_action_context__(self):
         """

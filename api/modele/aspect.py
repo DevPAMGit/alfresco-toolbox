@@ -6,13 +6,26 @@ class Aspect:
     # nom_complet Le nom complet de l'aspect.
     def __init__(self, uri: str, nom_complet: str):
         self.URI = uri
+        self.NOM = None
         self.TITRE = None
+        self.PREFIX = None
+        self.PARENT = None
         self.PROPRIETES = []
         self.DESCRIPTION = None
+        self.NOM_COMPLET = None
+
+    def maj_uri(self, uri: str):
+        self.URI = uri
+
+    def maj_nom(self, nom_complet: str):
+        """
+        Mise à jour du nom.
+        :param nom_complet: Le nom complet
+        :return:
+        """
         self.NOM_COMPLET = nom_complet
         self.PREFIX = nom_complet[0: nom_complet.rindex(":")]
         self.NOM = nom_complet[nom_complet.rindex(":") + 1:len(nom_complet)]
-        self.PARENT = None
 
     def set_parent(self, parent):
         self.PARENT = parent

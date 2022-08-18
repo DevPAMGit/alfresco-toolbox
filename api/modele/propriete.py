@@ -1,13 +1,17 @@
 class Propriete:
 
-    def __init__(self, nom_complet):
+    def __init__(self):
+        self.NOM = None
         self.TYPE = None
         self.TITRE = None
         self.MANDATORY = None
+        self.NOM_COMPLET = None
+
+    def maj_nom(self, nom_complet: str):
         self.NOM_COMPLET = nom_complet
         self.NOM = nom_complet[nom_complet.rindex(":") + 1:len(nom_complet)]
 
-    def set_type(self, t):
+    def maj_type(self, t):
         self.TYPE = t
 
     def set_mandatory(self, mandatory):

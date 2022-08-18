@@ -1,8 +1,8 @@
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
-from modules.modeles.propriete import Propriete
-from modules.modeles.aspect import Aspect
+from api.modele.propriete import Propriete
+from api.modele.aspect import Aspect
 from modules.modeles.modele import Modele
 from modules.modeles.type import Type
 from modules.vue.vue import Vue
@@ -125,7 +125,7 @@ class ControleurDonnees:
 
                 self.VUE.chargement_propriete(prop.get_nom_complet())
 
-                prop.set_type(self.charger_type(propriete.find(xmlns + "type").text))
+                prop.maj_type(self.charger_type(propriete.find(xmlns + "type").text))
                 prop.set_mandatory(self.charger_mandatory(propriete.find(xmlns + "mandatory")))
                 prop.set_titre(self.charger_titre(propriete.find(xmlns + "title")) if propriete is not None else None)
                 asp.add_propriete(prop)

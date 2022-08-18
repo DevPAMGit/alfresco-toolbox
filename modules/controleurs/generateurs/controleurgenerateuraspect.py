@@ -1,9 +1,9 @@
 import codecs
 import os.path
 
-from modules.modeles.aspect import Aspect
+from api.modele.aspect import Aspect
 from modules.modeles.modele import Modele
-from modules.modeles.propriete import Propriete
+from api.modele.propriete import Propriete
 from modules.vue.vue import Vue
 
 

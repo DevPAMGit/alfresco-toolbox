@@ -4,9 +4,9 @@ from xml.dom import minidom
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
-from modules.modeles.aspect import Aspect
+from api.modele.aspect import Aspect
 from modules.modeles.modele import Modele
-from modules.modeles.propriete import Propriete
+from api.modele.propriete import Propriete
 from modules.modeles.type import Type
 from modules.vue.vue import Vue
 

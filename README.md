@@ -2,7 +2,7 @@
 ## Description
 Script Python dont le but est de faciliter le développement Java d'un AMP Alfresco en générant les classes modèles des types de contenus déclarés.
 
-Il faut au préalable avoir déclarés des types de contenus et les avoir insérés dans le fichier _bootstrap.xml_.
+Il faut au préalable avoir déclaré des types de contenus et les avoir insérés dans le fichier _bootstrap.xml_.
 
 Ensuite, ce script va lire dans ce fichier les éléments déclarés dans comme modèles. 
 Et pour chacun il créera les fichiers _.java_ pour chaque **aspects** et **types** déclarés dans chaque fichier modèle.

@@ -1,4 +1,4 @@
-class CustomException(Exception):
+class ExceptionPersonnalisee(Exception):
     """
     Exception pour les erreurs personnalisées.
     """
