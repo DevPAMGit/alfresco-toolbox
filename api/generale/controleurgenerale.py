@@ -27,6 +27,7 @@ class ControleurGenerale:
         :param racine : La racine du noeud. ;
         """
         fd = codecs.open(chemin, "w", "utf-8")
+
         fd.write(re.sub("\\n\\s*\\n", "\\n",
                         minidom.parseString(ElementTree.tostring(racine, "utf-8")).toprettyxml(indent="\t")))
         fd.close()

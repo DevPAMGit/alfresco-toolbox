@@ -1,5 +1,4 @@
 import re
-from xml.dom import minidom
 from xml.etree import ElementTree
 import codecs
 import os
@@ -58,16 +57,14 @@ class ActionControleur(ControleurGenerale):
         """
         Méthode permettant de mettre à jour le contenu du fichier 'action-context.xml'
         """
-
+        self.VUE.action("Mise à jour du fichier 'action-context.xml'")
         racine: Element = ElementTree.parse(self.MODELE.obt_chemin_fichier_action_context()).getroot()
 
         for action in self.MODELE.obt_actions():
             racine.append(self.__obt_noeud_bean__(racine, action))
 
-        fd = codecs.open(self.MODELE.obt_chemin_fichier_action_context(), "w", "utf-8")
-        fd.write(re.sub("\\n\\s*\\n", "\\n",
-                        minidom.parseString(ElementTree.tostring(racine, "utf-8")).toprettyxml(indent="\t")))
-        fd.close()
+        self.ecrire_xml(self.MODELE.obt_chemin_fichier_action_context(), racine)
+        self.VUE.succes(None)
 
     @staticmethod
     def __obt_noeud_bean__(racine: Element, action: ClasseInfoModele) -> Element:
@@ -246,6 +243,7 @@ class ActionControleur(ControleurGenerale):
 
         self.VUE.action("Mise à jour du fichier 'module_context.xml'")
 
+        ElementTree.register_namespace('', "http://www.springframework.org/schema/beans")
         racine = ElementTree.parse(self.MODELE.obt_chemin_fichier_module_context()).getroot()
         xmlns = racine.tag[0:racine.tag.rindex("}") + 1]
 
@@ -253,7 +251,7 @@ class ActionControleur(ControleurGenerale):
                                                            "${project.artifactId}/context/action-context.xml']")
 
         if importation is not None:
-            print(importation)
+            self.VUE.succes(None)
             return
 
         importation = Element("import")
@@ -262,6 +260,7 @@ class ActionControleur(ControleurGenerale):
         racine.append(importation)
 
         self.ecrire_xml(self.MODELE.obt_chemin_fichier_module_context(), racine)
+        self.VUE.succes(None)
 
     def __initialiser__(self):
         """
