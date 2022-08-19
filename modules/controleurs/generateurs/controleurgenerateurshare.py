@@ -38,16 +38,16 @@ class ControleurGenerateurShare:
         """
         Met à jour la liste des aspects visibles.;
         :param racine : La racine du fichier xml à mettre à jour. ;
-        :param nom_complet_aspect : Le nom complet de l'aspect. ;
+        :param nom_complet_aspect : Le nom complet de l'typecontenu. ;
         """
 
         visible: Element = racine.findall(".//config[@condition='DocumentLibrary']/aspects/visible")[0]
-        aspect: Element = visible.find(".//aspect[@name='" + nom_complet_aspect + "']")
+        aspect: Element = visible.find(".//typecontenu[@name='" + nom_complet_aspect + "']")
 
         if aspect is not None:
             visible.remove(aspect)
 
-        aspect = Element("aspect")
+        aspect = Element("typecontenu")
         aspect.set("name", nom_complet_aspect)
 
         visible.append(aspect)
@@ -57,7 +57,7 @@ class ControleurGenerateurShare:
         if config is not None:
             racine.remove(config)
         if isinstance(element, Aspect):
-            racine.append(self.get_noeud(element, "aspect"))
+            racine.append(self.get_noeud(element, "typecontenu"))
         else:
             racine.append(self.get_noeud(element, "node-type"))
 
@@ -91,7 +91,7 @@ class ControleurGenerateurShare:
     def ajouter_configuration(self, models: dict[str, (Aspect | Type)]):
         """
         Ajoute une liste d'aspects dans le fichier de configuration 'config_custom_share.xml' du projet.;
-        :param models: Le dictionnaire d'aspect à ajouter.;
+        :param models: Le dictionnaire d'typecontenu à ajouter.;
         """
         self.RACINE = ElementTree.parse(self.MODELE.get_chemin_config_custom_fichier())
         root = self.RACINE.getroot()
@@ -110,9 +110,9 @@ class ControleurGenerateurShare:
 
     def get_noeud(self, element: (Aspect | Type), typ: str):
         """
-        Ajoute un aspect dans le fichier de configuration 'config_custom_share.xml' du projet.
+        Ajoute un typecontenu dans le fichier de configuration 'config_custom_share.xml' du projet.
         :param typ: Le type du noeud.
-        :param element: L'aspect à ajouter. ;
+        :param element: L'typecontenu à ajouter. ;
         """
 
         # Création du noeud XML.

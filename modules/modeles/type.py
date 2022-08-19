@@ -37,8 +37,8 @@ class Type:
     def set_description(self, description: str):
         self.DESCRIPTION = description
 
-    # Récupère le prefix l'aspect.
-    # Retourne le prefix de l'aspect.
+    # Récupère le prefix l'typecontenu.
+    # Retourne le prefix de l'typecontenu.
     def get_prefix(self):
         return self.PREFIX
 

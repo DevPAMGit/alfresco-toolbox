@@ -88,8 +88,8 @@ class ControleurGenerateurType:
                  "\tpublic " + self.get_nom_class(typ) + "TypeHelperModele(NodeService serviceNoeud, NodeRef noeud){"
                  "\n\t\tsuper(serviceNoeud, noeud);\n" +
                  "\t}\n\n" +
-                 "\t/** Permet de vérifier que le nœud du modèle possède l'aspect désigné en paramètre.\n" +
-                 "\t * @return <c>true</c> si l'aspect est présent, sinon <c>false</c>. */ \n" +
+                 "\t/** Permet de vérifier que le nœud du modèle possède l'typecontenu désigné en paramètre.\n" +
+                 "\t * @return <c>true</c> si l'typecontenu est présent, sinon <c>false</c>. */ \n" +
                  "\tpublic boolean hasType(){ \n" +
                  "\t\treturn this.hasType(" + self.get_nom_class(typ) + "TypeModele.NOM);\n" +
                  "\t}\n\n")
@@ -109,8 +109,8 @@ class ControleurGenerateurType:
 
         self.VUE.succes()
 
-    # Crée l'arborescence de l'aspect.
-    # aspect L'aspect dont il faut créer l'arborescence.
+    # Crée l'arborescence de l'typecontenu.
+    # typecontenu L'typecontenu dont il faut créer l'arborescence.
     def creer_arborescence(self, typ: Type):
         chemin = self.get_chemin_dossier_type(typ)
 
@@ -138,7 +138,7 @@ class ControleurGenerateurType:
         return typ.get_nom().capitalize()
 
     # Permet de récupérer les méthodes nécessaires pour un modèle.
-    # aspect L'aspect de la propriété.
+    # typecontenu L'typecontenu de la propriété.
     # propriete La propriété dont on souhaite récupérer les méthodes.
     # Retourne une chaîne de caractères.
     def get_model_helper_methodes(self, typ: Type, propriete: Propriete):
@@ -149,7 +149,7 @@ class ControleurGenerateurType:
         return resultat
 
     # Permet de récupérer la méthode getter de la propriété en paramètre.
-    # aspect L'aspect de la propriété.
+    # typecontenu L'typecontenu de la propriété.
     # propriete La propriété dont on souhaite récupérer la méthode getter.
     # Retourne une chaîne de caractères.
     def get_methode_getter(self, typ: Type, propriete: Propriete):
@@ -164,7 +164,7 @@ class ControleurGenerateurType:
                "\t}\n\n"
 
     # Permet de récupérer la méthode setter de la propriété en paramètre.
-    # aspect L'aspect de la propriété.
+    # typecontenu L'typecontenu de la propriété.
     # propriete La propriété dont on souhaite récupérer la méthode getter.
     # Retourne une chaîne de caractères.
     def get_methode_setter(self, typ: Type, propriete: Propriete):
@@ -180,7 +180,7 @@ class ControleurGenerateurType:
                "\t}\n\n"
 
     # Permet de récupérer la méthode de validité de la propriété en paramètre.
-    # aspect L'aspect de la propriété.
+    # typecontenu L'typecontenu de la propriété.
     # propriete La propriété dont on souhaite récupérer la méthode getter.
     # Retourne une chaîne de caractères.
     @staticmethod
@@ -211,8 +211,8 @@ class ControleurGenerateurType:
     # typ Le type dont on souhaite récupérer la méthode de validité.
     @staticmethod
     def get_aspect_methode_validite(typ: Type):
-        re = "\t/** Méthode permettant de vérifier la validité de l'aspect '" + typ.get_nom_complet() + "'. \n" + \
-             "\t * @return <c>true</c> si l'aspect à toutes ces propriétés valides sinon <c>false</c>. */\n" + \
+        re = "\t/** Méthode permettant de vérifier la validité de l'typecontenu '" + typ.get_nom_complet() + "'. \n" + \
+             "\t * @return <c>true</c> si l'typecontenu à toutes ces propriétés valides sinon <c>false</c>. */\n" + \
              "\tpublic boolean estAspectValide() { \n" + \
              "\t\treturn ( "
 

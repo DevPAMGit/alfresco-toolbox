@@ -12,8 +12,8 @@ class Modele:
         self.GROUP_ID = None
         self.ARTIFACT_ID = None
 
-    # Ajoute un aspect au modèle.
-    # aspect L'aspect à ajouter.
+    # Ajoute un typecontenu au modèle.
+    # typecontenu L'typecontenu à ajouter.
     def add_aspect(self, aspect):
         self.ASPECTS[aspect.get_nom_complet()] = aspect
 

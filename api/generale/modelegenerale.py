@@ -37,3 +37,10 @@ class ModeleGenerale:
         :param chemin_dossier_ressource : La nouvelle valeur du paramètre de classe __CHEMIN_DOSSIER_RESOURCE__. ;
         """
         self.__CHEMIN_DOSSIER_RESOURCE__ = chemin_dossier_ressource
+
+    def get_artifact_id(self) -> str:
+        """
+        Récupère l'artifact id du modèle de donnée.
+        :return: La valeur de l'artifact id du modèle de donnée.
+        """
+        return self.ARTIFACT_ID

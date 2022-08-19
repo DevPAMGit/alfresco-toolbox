@@ -27,3 +27,11 @@ class DonneesModele(ModeleGenerale):
         self.CHEMIN_FICHIER_BOOTSTRAP = self.CHEMIN_PROJET + "/" + self.ARTIFACT_ID \
                                         + "-platform/src/main/resources/alfresco/module/" + self.PLATFORM_ARTIFACT_ID \
                                         + "/context/bootstrap-context.xml"
+
+    def obt_chemin_platform_ressource(self):
+        """
+        Méthode permettant d'obtenir le chemin vers le dossier de platform de ressource.
+        :return: Retourne Le chemin vers le dossier de platform de ressource.
+        """
+        return self.CHEMIN_PROJET + "/" + self.ARTIFACT_ID + "-platform/src/main/resources"
+

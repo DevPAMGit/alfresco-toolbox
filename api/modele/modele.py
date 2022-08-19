@@ -6,11 +6,9 @@ class Modele:
     Classe modèle pour des types de contenus.
     """
 
-    def __init__(self, uri: str, nom_complet: str):
+    def __init__(self):
         """
-        Initialise une nouvelle instance de la classe Modele. ;
-        :param uri: L'URI du modèle. ;
-        :param nom_complet : Le nom complet du modèle.
+        Initialise une nouvelle instance de la classe Modele.
         """
         self.URI = None
         self.NOM = None
@@ -43,3 +41,25 @@ class Modele:
         :param proprietes: La liste des propriétés.
         """
         self.PROPRIETES += proprietes
+
+    def obt_proprietes(self):
+        """
+        Méthode permettant de récupérer la liste des propriétés.
+        :return: La liste des propriétés.
+        """
+        return self.PROPRIETES
+
+    def maj_parent(self, parent: (str | None)):
+        """
+        Met à jour le parent du modèle.
+        :param parent: La nouvelle valeur du parent.
+        """
+        self.PARENT = parent
+
+    def maj_description(self, description: str):
+        """
+        Méthode permettant d'ajouter une description fichier.
+        :param description:
+        :return:
+        """
+        self.DESCRIPTION = description

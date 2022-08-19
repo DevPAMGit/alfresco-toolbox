@@ -74,10 +74,10 @@ class Vue:
         self.PREVIOUS = len(message)
         print(message, end="")
 
-    # Imprime sur la sortie standard un message signalant le chargement d'un aspect.
-    # nom_aspect Le nmo de l'aspect.
+    # Imprime sur la sortie standard un message signalant le chargement d'un typecontenu.
+    # nom_aspect Le nmo de l'typecontenu.
     def chargement_aspect(self, nom_aspect):
-        print("\n" + self.INFO + "Chargement de l'aspect '" + nom_aspect + "'.")
+        print("\n" + self.INFO + "Chargement de l'typecontenu '" + nom_aspect + "'.")
 
     def chargement_propriete(self, nom_propriete):
         message = self.ACTION + "\tChargement de la propriété '" + nom_propriete + "'."
@@ -85,17 +85,17 @@ class Vue:
         print(message, end="")
 
     def chargement_propriete_mandatory(self, nom_aspect):
-        print(self.INFO + "Chargement des propriétés 'mandatory' de l'aspect '" + nom_aspect + "'.")
+        print(self.INFO + "Chargement des propriétés 'mandatory' de l'typecontenu '" + nom_aspect + "'.")
 
     def ajout_propriete_aspect(self, nom_aspect):
-        message = self.INFO + "Chargement des propriétés de l'aspect '" + nom_aspect + "'."
+        message = self.INFO + "Chargement des propriétés de l'typecontenu '" + nom_aspect + "'."
         print(message)
 
     def chargement_type(self, nom_type):
         print("\n" + self.INFO + "Chargement du type '" + nom_type + "'.")
 
     def chargement_proprietes_parent(self, nom_aspect_parent):
-        print(self.INFO + "Chargement des propriétés du parent '" + nom_aspect_parent + "' de l'aspect.")
+        print(self.INFO + "Chargement des propriétés du parent '" + nom_aspect_parent + "' de l'typecontenu.")
 
     def creation_arborescence(self):
         message = self.ACTION + "Création de l'arborescence du projet."

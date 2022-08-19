@@ -79,7 +79,7 @@ class ControleurDonnees:
         aspects = racine.find(".//" + xmlns + "aspects")
 
         if aspects is not None:
-            for aspect in aspects.findall(xmlns + "aspect"):
+            for aspect in aspects.findall(xmlns + "typecontenu"):
                 self.charge_aspect(xmlns, uri, aspects, aspect)
 
     def charger_types(self, racine, uri, xmlns):
@@ -89,10 +89,10 @@ class ControleurDonnees:
             for t in types.findall(xmlns + "type"):
                 self.charge_type(xmlns, uri, types, t)
 
-    # Charge un aspect dans le modèle.
+    # Charge un typecontenu dans le modèle.
     # xmlns Le xmlns du fichier XML.
     # aspects Le noeud XML contenant tous les aspects.
-    # aspect Le noeud XML de l'aspect à ajouter.
+    # typecontenu Le noeud XML de l'typecontenu à ajouter.
     def charge_aspect(self, xmlns, uri: str, aspects, aspect: Element):
         asp = Aspect(uri, aspect.attrib["name"])
 
@@ -111,11 +111,11 @@ class ControleurDonnees:
         else:
             return None
 
-    # Charge dans le modèle aspect ses propriétés
+    # Charge dans le modèle typecontenu ses propriétés
     # xmlns Le xmlns du fichier XML.
     # aspects Le noeud XML contenant tous les aspects.
     # asp L'objet modele
-    # aspect Le noeud XML de l'aspect contenant toutes les propriétés.
+    # typecontenu Le noeud XML de l'typecontenu contenant toutes les propriétés.
     def charger_proprietes(self, xmlns: str, aspects: Element, asp, aspect: Element):
         proprietes = aspect.find(xmlns + "properties")
 
@@ -135,7 +135,7 @@ class ControleurDonnees:
         mandatory_aspects = aspect.find(xmlns + "mandatory-aspects")
         if mandatory_aspects is not None and len(mandatory_aspects) > 0:
 
-            for mandatory_aspect in mandatory_aspects.findall(xmlns + "aspect"):
+            for mandatory_aspect in mandatory_aspects.findall(xmlns + "typecontenu"):
 
                 self.VUE.ajout_propriete_aspect(mandatory_aspect.text)
 
@@ -162,7 +162,6 @@ class ControleurDonnees:
                 asp.set_parent(nom_parent)
         else:
             asp.set_parent("cm:content")
-
 
     @staticmethod
     def charger_type(valeur):
@@ -196,10 +195,10 @@ class ControleurDonnees:
 
         return False
 
-    # Récupère les propriétés d'un aspect dont le nom (complet) est mi en paramètre.
+    # Récupère les propriétés d'un typecontenu dont le nom (complet) est mi en paramètre.
     # xmlns Le xmlns du fichier XML.
     # aspects Le noeud contenant tous les aspects.
-    # nom_aspect Le nom de l'aspect dont on souhaite récupérer le nom.
+    # nom_aspect Le nom de l'typecontenu dont on souhaite récupérer le nom.
     def get_aspect_proprietes(self, xmlns, aspects, nom_aspect):
         if nom_aspect == "cm:folder" or nom_aspect == "cm:content":
             return []
@@ -208,7 +207,7 @@ class ControleurDonnees:
         if nom_aspect in asps:
             return asps[nom_aspect].get_proprietes()
 
-        self.charge_aspect(xmlns, aspects, aspects.find(xmlns + "aspect[@name='" + nom_aspect + "']"))
+        self.charge_aspect(xmlns, aspects, aspects.find(xmlns + "typecontenu[@name='" + nom_aspect + "']"))
 
     def get_parent_ancetre(self, nom_aspect: str):
         """
@@ -226,7 +225,7 @@ class ControleurDonnees:
 
         return None
 
-    # Méthode permettant de charger le titre d'un type ou d'un aspect.
+    # Méthode permettant de charger le titre d'un type ou d'un typecontenu.
     # noeud_titre Le noeud XML contenant la valeur du titre.
     @staticmethod
     def charger_titre(noeud_titre):
