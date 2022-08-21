@@ -67,6 +67,7 @@ class ActionControleur(ControleurSecondaire):
         """
         Contrôle les actions nécessaires pour la gestion des actions d'un projet Alfresco.
         """
+        self.VUE.titre("PRISE EN COMPTE DES ACTIONS")
         self.__initialiser__()
         self.__extraire_donnees__()
         self.__maj_module_context__()
@@ -254,8 +255,9 @@ class ActionControleur(ControleurSecondaire):
             self.VUE.succes(None)
 
         # Création du fichier 'action_context' s'il n'existe pas.
-        if not os.path.exists(chemin_fichier_action_context):
-            self.__init_action_context__()
+        if os.path.exists(chemin_fichier_action_context):
+            os.remove(chemin_fichier_action_context)
+        self.__init_action_context__()
 
     def __init_action_context__(self):
         """

@@ -38,7 +38,7 @@ class ActionModele(ModeleGenerale):
                self.GROUP_ID.replace(".", "/") + "/" + self.ARTIFACT_ID.replace("-", "") + "/actions"
 
     def obt_chemin_fichier_modele(self):
-        return self.__CHEMIN_DOSSIER_RESOURCE__ + "/alfrescoactions.xml.sauv"
+        return self.CHEMIN_DOSSIER_RESOURCE + "/alfrescoactions.xml.sauv"
 
     def ajt_classe_action(self, action: ClasseInfoModele):
         """

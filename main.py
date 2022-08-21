@@ -22,6 +22,5 @@ import sys
 from api.principal.principalcontroleur import ControleurPrincipal
 
 ctrl: ControleurPrincipal = ControleurPrincipal()
-# print(sys.argv)
-ctrl.formatter(['.\\main.py', 'C:\\personnels\\developpements\\affichage-des-actes'][1])
-#ctrl.formatter(['.\\main.py', 'C:\\personnels\\developpements\\affichage-des-actes'])
+print(sys.argv)
+ctrl.formatter(sys.argv[1])

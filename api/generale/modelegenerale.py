@@ -8,7 +8,7 @@ class ModeleGenerale:
         self.GROUP_ID = None
         self.ARTIFACT_ID = None
         self.CHEMIN_PROJET = None
-        self.__CHEMIN_DOSSIER_RESOURCE__ = None
+        self.CHEMIN_DOSSIER_RESOURCE = None
 
     def maj_chemin_projet(self, chemin_projet: str):
         """
@@ -36,7 +36,7 @@ class ModeleGenerale:
         Met à jour la valeur du paramètre de classe __CHEMIN_DOSSIER_RESOURCE__. ;
         :param chemin_dossier_ressource : La nouvelle valeur du paramètre de classe __CHEMIN_DOSSIER_RESOURCE__. ;
         """
-        self.__CHEMIN_DOSSIER_RESOURCE__ = chemin_dossier_ressource
+        self.CHEMIN_DOSSIER_RESOURCE = chemin_dossier_ressource
 
     def get_artifact_id(self) -> str:
         """

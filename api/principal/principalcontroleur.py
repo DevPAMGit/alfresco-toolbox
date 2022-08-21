@@ -1,7 +1,9 @@
+import os
 from abc import ABC
 
-from api.typecontenu.source.modelecontroleur import ModeleControleur
+from api.typecontenu.aspectcontroleur import AspectControleur
 from api.modele.modele import Modele
+from api.typecontenu.typecontroleur import TypeControleur
 from libs.pythonconsolevue.consolevue import ConsoleVue
 from api.action.actioncontroleur import ActionControleur
 from api.donnees.donneescontroleur import DonneesControleur
@@ -19,25 +21,32 @@ class ControleurPrincipal(PrincipalBufferControleur, ABC):
         """
         super().__init__(ConsoleVue(100))
 
-        self.CTRL_TYPE = ModeleControleur(100)
-        self.CTRL_ASPECT = ModeleControleur(100)
+        self.CTRL_TYPE = TypeControleur(100)
+        self.CTRL_ASPECT = AspectControleur(100)
         self.CTRL_ACTIONS = ActionControleur(100)
         self.CTRL_DONNEES = DonneesControleur(self, 100)
 
     def formatter(self, argv: str):
+
+        self.maj_chemin_dossier_ressources(os.getcwd() + "/ressources")
+
         self.VUE.titre("FORMATAGE DU PROJET")
         self.CTRL_DONNEES.controler(argv)
+        self.CTRL_ASPECT.creer_fichiers_sources()
+        self.CTRL_ASPECT.generer_aspects()
+        self.CTRL_TYPE.generer_type()
+        self.CTRL_ACTIONS.controler()
 
     def ajt_aspect(self, aspect: Modele):
         """
-        Méthode permettant d'ajouter un nouvel typecontenu au modèle de données. ;
-        :param aspect: L'typecontenu à ajouter. ;
+        Méthode permettant d'ajouter un nouveau type de contenu au modèle de données.
+        :param aspect: Le type de contenu à ajouter. ;
         """
         self.CTRL_ASPECT.ajt_modele(aspect)
 
     def obt_aspect(self, reference: str) -> (Modele | None):
         """
-        Méthode permettant d'ajouter un typecontenu.
+        Méthode permettant d'ajouter un type de contenu.
         :param reference: Le nom du type de contenu à récupérer.
         :return: Une instance de type Modele.
         """
@@ -51,6 +60,7 @@ class ControleurPrincipal(PrincipalBufferControleur, ABC):
         self.CTRL_ACTIONS.maj_artifact_id(artifact_id)
         self.CTRL_DONNEES.maj_artifact_id(artifact_id)
         self.CTRL_TYPE.maj_artifact_id(artifact_id)
+        self.CTRL_ASPECT.maj_artifact_id(artifact_id)
 
     def maj_chemin_projet(self, chemin_projet: str):
         """
@@ -60,6 +70,7 @@ class ControleurPrincipal(PrincipalBufferControleur, ABC):
         self.CTRL_ACTIONS.maj_chemin_projet(chemin_projet)
         self.CTRL_DONNEES.maj_chemin_projet(chemin_projet)
         self.CTRL_TYPE.maj_chemin_projet(chemin_projet)
+        self.CTRL_ASPECT.maj_chemin_projet(chemin_projet)
 
     def maj_group_id(self, group_id: str):
         """
@@ -69,6 +80,7 @@ class ControleurPrincipal(PrincipalBufferControleur, ABC):
         self.CTRL_ACTIONS.maj_group_id(group_id)
         self.CTRL_DONNEES.maj_group_id(group_id)
         self.CTRL_TYPE.maj_group_id(group_id)
+        self.CTRL_ASPECT.maj_group_id(group_id)
 
     def maj_chemin_dossier_ressources(self, chemin_dossier_ressource: str):
         """
@@ -78,6 +90,7 @@ class ControleurPrincipal(PrincipalBufferControleur, ABC):
         self.CTRL_ACTIONS.maj_chemin_dossier_ressources(chemin_dossier_ressource)
         self.CTRL_DONNEES.maj_chemin_dossier_ressources(chemin_dossier_ressource)
         self.CTRL_DONNEES.maj_chemin_dossier_ressources(chemin_dossier_ressource)
+        self.CTRL_ASPECT.maj_chemin_dossier_ressources(chemin_dossier_ressource)
 
     def ajt_type(self, modele: Modele):
         """

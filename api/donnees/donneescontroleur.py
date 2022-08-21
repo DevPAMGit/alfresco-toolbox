@@ -35,8 +35,6 @@ class DonneesControleur(ControleurSecondaire):
                                                                 self.MODELE.get_artifact_id() + "-platform"), modele.text)
 
     def __charger_modele_contenu__(self, chemin_fichier_modele: str, nom_fichier_modele: str):
-        # self.VUE.info("Chargement du fichier modèle '" +
-        #              nom_fichier_modele[nom_fichier_modele.rfind("/")+1: len(chemin_fichier_modele)] + "'")
         self.VUE.sous_titre_1("Chargement du fichier modèle '" +
                               nom_fichier_modele[nom_fichier_modele.rfind("/")+1: len(chemin_fichier_modele)] + "'")
 
@@ -93,6 +91,7 @@ class DonneesControleur(ControleurSecondaire):
         modele: Modele = Modele()
 
         modele.maj_nom(nom)
+        modele.maj_uri(uri)
         modele.maj_parent(self.__obt_parent__(xmlns, noeud_modele))
         modele.ajt_proprietes(self.__charger_proprietes__(xmlns, noeud_modele))
         modele.maj_description(self.charger_description(noeud_modele.find(xmlns + "description")))

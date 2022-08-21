@@ -11,13 +11,13 @@ class Modele:
         Initialise une nouvelle instance de la classe Modele.
         """
         self.URI = None
-        self.NOM = None
         self.TITRE = None
         self.PARENT = None
-        self.PREFIX = None
-        self.PROPRIETES = []
         self.DESCRIPTION = None
         self.NOM_COMPLET = None
+        self.NOM: str | None = None
+        self.PREFIX: str | None = None
+        self.PROPRIETES: list[Propriete] = []
 
     def maj_uri(self, uri: str):
         """
