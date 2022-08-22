@@ -149,7 +149,9 @@ class ModeleControleur(ControleurSecondaire):
                 if propriete.MANDATORY:
                     fd.write(METHODE_MODELE_VALIDITE_2.format(propriete.NOM[0].upper() + propriete.NOM[1:]))
 
-        fd.write("}")
+            fd.write(");\n\t}\n\n")
+
+        fd.write("}\n")
         fd.close()
 
         self.VUE.succes(None)

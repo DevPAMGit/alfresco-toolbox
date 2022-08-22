@@ -21,6 +21,14 @@ public class AlfrescoModeleHelper extends AlfrescoHelper {
 		this.noeud = noeud;
 	}
 
+	/**
+	 * Méthode permettant de récupérer le nœud référencé dans la classe.
+	 * @return Le nœud référencé dans la classe.
+	 */
+	public NodeRef getNoeud() {
+		return this.noeud;
+	}
+
 	/** Permet de vérifier que le nœud du modèle possède l'aspect désigné en paramètre.
 	* @param aspect L'aspect dont on souhaite vérifier la présence.
 	* @return <c>true</c> si l'aspect est présent, sinon <c>false</c>. */

@@ -1,4 +1,5 @@
 import re
+from xml.dom import minidom
 from xml.etree import ElementTree
 import codecs
 import os
@@ -35,7 +36,18 @@ class ActionControleur(ControleurSecondaire):
         for action in self.MODELE.obt_actions():
             racine.append(self.__obt_noeud_bean__(racine, action))
 
-        self.ecrire_xml(self.MODELE.obt_chemin_fichier_action_context(), racine)
+        fd = open(self.MODELE.obt_chemin_fichier_action_context(), "w")
+        fd.write(
+            "<?xml version='1.0' encoding='UTF-8'?>\n"
+            "<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN/EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>\n"
+        )
+        fd.write(
+            re.sub("\\n\\s*\\n", "\\n",
+                        minidom.parseString(ElementTree.tostring(racine, "utf-8"))
+                   .childNodes[0].toprettyxml(indent="\t"))
+        )
+        fd.close()
+
         self.VUE.succes(None)
 
     @staticmethod
@@ -54,7 +66,7 @@ class ActionControleur(ControleurSecondaire):
             propriete: Element = Element("property")
             propriete.set("name", action.REGISTRE_SERVICE_NOM)
 
-            ref: Element = Element("property")
+            ref: Element = Element("ref")
             ref.set("bean", "ServiceRegistry")
 
             propriete.append(ref)
@@ -145,7 +157,7 @@ class ActionControleur(ControleurSecondaire):
     def __extraire_utilisation_registre_service(self, contenu_fichier: str) -> (bool, str):
         self.VUE.action("Extraction de l'utilisation du registre des services.")
 
-        match_description_service = re.search("(private|public)\\s+ServiceRegistry\\s+(\\S+).*", contenu_fichier)
+        match_description_service = re.search("(private|public)\\s+ServiceRegistry\\s+(\\S+);", contenu_fichier)
 
         if match_description_service is None:
             resultat: bool = False

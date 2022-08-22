@@ -57,4 +57,4 @@ METHODE_MODELE_VALIDITE: str = "\t/** Méthode permettant de vérifier la validi
                                "\tpublic boolean estAspectValide() {{ \n" \
                                "\t\treturn ( this.hasAspect()"
 
-METHODE_MODELE_VALIDITE_2: str = "\n\t\t&& this.est{0}Valide()\n\t\t);\n\t}}\n\n"
+METHODE_MODELE_VALIDITE_2: str = "\n\t\t&& this.est{0}Valide()"
