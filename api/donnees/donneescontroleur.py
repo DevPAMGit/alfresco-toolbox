@@ -154,7 +154,8 @@ class DonneesControleur(ControleurSecondaire):
             return []
 
         proprietes: list[Propriete] = []
-        for noeud_mandatory in noeuds_mandatory.findall(xmlns + "mandatory-aspects"):
+        for noeud_mandatory in noeuds_mandatory.findall(xmlns + "aspects"):
+            print(parent. noeud_mandatory.text)
             proprietes += self.obt_proprietes_aspect(xmlns, uri, parent, noeud_mandatory.text)
 
         return proprietes

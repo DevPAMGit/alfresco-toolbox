@@ -33,7 +33,11 @@ DEFINITION_CLASSE_HELPER_CONTENU: str = "/** Classe modèle d'aide personnalisé
                                         "\t * @param valeurs Les valeurs du type de contenu à sa création. */\n" \
                                         "\tpublic void addAspect(Map<QName,Serializable> valeurs) {{\n" \
                                         "\t\tthis.addAspect(this.noeud, {1}.NOM, valeurs);\n" \
-                                        "\t}}\n\n"
+                                        "\t}}\n\n\t/**\n\t* Vérifie si le nœud du modèle est du type en en paramètre.*" \
+                                        " \n\t@return <c>true</c> si le nœud est du type en paramètre sinon " \
+                                        "<c>false</c>.\n\t*/\n\tpublic boolean hasType() {{\n\t\treturn " \
+                                        "this.hasType({1}.NOM);\n\t}}\n\n\t/**\n\t* Ajoute le type au nœud.\n\t*/" \
+                                        "\n\tpublic void addType(){{\n\t\tthis.addType({1}.NOM);\n\t}}\n\n"
 
 METHODE_GETTER_HELPER: str = "\t/** Méthode permettant de récupérer la valeur de la propriété '{0}'. \n" \
                              "\t * @return {1} La valeur de la propriété '{0}'. */\n" \
