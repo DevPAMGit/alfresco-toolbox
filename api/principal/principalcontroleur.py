@@ -31,7 +31,7 @@ class ControleurPrincipal(PrincipalBufferControleur, ABC):
         self.maj_chemin_dossier_ressources(os.getcwd() + "/ressources")
 
         self.VUE.titre("FORMATAGE DU PROJET")
-        self.CTRL_DONNEES.controler(argv)
+        self.CTRL_DONNEES.extraire(argv)
         self.CTRL_ASPECT.creer_fichiers_sources()
         self.CTRL_ASPECT.generer_aspects()
         self.CTRL_TYPE.generer_type()
@@ -105,3 +105,18 @@ class ControleurPrincipal(PrincipalBufferControleur, ABC):
         :return: Un dictionnaire des aspects du projet.
         """
         return self.CTRL_ASPECT.obt_modeles()
+
+    def obt_types(self):
+        """
+        Méthode permettant de récupérer les types du projet.
+        :return: Un dictionnaire des aspects du projet.
+        """
+        return self.CTRL_TYPE.obt_modeles()
+
+    def obt_type(self, reference):
+        """
+        Méthode permettant de récupérer un type grâce à sa référence.
+        :param reference: La référence dont on souhaite récupérer le type.
+        :return: Le type référencé par la référence ou None.
+        """
+        return self.CTRL_TYPE.obt_modele(reference)

@@ -13,16 +13,17 @@ PROPRIETE_MODELE: str = "\t/** Modèle pour la propriété '{0}'. */\n" \
 EN_TETE_HELPER: str = "package {0} ;\n\n" \
                       "import org.alfresco.service.cmr.repository.NodeService;\n" \
                       "import org.alfresco.service.cmr.repository.NodeRef;\n" \
+                      "import org.alfresco.service.ServiceRegistry;" \
                       "import org.alfresco.service.namespace.QName;\n\nimport {1};\n\n" \
                       "import java.io.Serializable;\nimport java.util.Date;\nimport java.util.Map;\n\n"
 
 DEFINITION_CLASSE_HELPER_CONTENU: str = "/** Classe modèle d'aide personnalisée pour le type de contenu" \
                                         " {{@link {0}}}.*/\npublic class {0} extends AlfrescoModeleHelper {{\n\n" \
                                         "\t/** Initialise une nouvelle instance de la classe {{@link {0}}}. " \
-                                        "\n\t * @param serviceNoeud Le service de gestion des nœuds d'Alfresco. \n" \
+                                        "\n\t * @param serviceRegistry Le registre des services. \n" \
                                         "\t * @param noeud Le nœud de référence. */\n" \
-                                        "\tpublic {0}(NodeService serviceNoeud, NodeRef noeud){{\n" \
-                                        "\t\tsuper(serviceNoeud, noeud);\n\t}}\n\n" \
+                                        "\tpublic {0}(ServiceRegistry serviceRegistry, NodeRef noeud){{\n" \
+                                        "\t\tsuper(serviceRegistry, noeud);\n\t}}\n\n" \
                                         "\t/** Permet de vérifier que le nœud du modèle possède le type de contenu" \
                                         " désigné en paramètre.\n\t * @return <c>true</c> si le type de contenu est " \
                                         "présent, sinon <c>false</c>. */\n\tpublic boolean hasAspect() {{ " \

@@ -49,19 +49,20 @@ class ModeleModele(ModeleGenerale):
         :return: Le chemin vers le dossier d'un modèle.
         """
         return self.CHEMIN_PROJET + "/" + self.ARTIFACT_ID + "-platform/src/main/java/" + \
-               self.GROUP_ID.replace(".", "/") + "/" + self.ARTIFACT_ID.replace("-", "") + "/modeles/typescontenus/" + \
-               modele.PREFIX.lower() + "/" + genre.lower() + "/" + modele.NOM.lower()
+               self.GROUP_ID.replace(".", "/") + "/" + self.ARTIFACT_ID.replace("-", "") + \
+               "/alfresco/modeles/typescontenus/" + modele.PREFIX.lower() + "/" + genre.lower() + "/" + \
+               modele.NOM.lower()
 
     def obt_java_modele_package(self, modele: Modele, genre: str):
-        return self.GROUP_ID + "." + self.ARTIFACT_ID.replace("-", "") + ".modeles.typescontenus." + modele.PREFIX + \
+        return self.GROUP_ID + "." + self.ARTIFACT_ID.replace("-", "") + ".alfresco.modeles.typescontenus." + modele.PREFIX + \
                "." + genre.lower() + "." + modele.NOM.lower()
 
     def obt_alfresco_sources_classes_package(self):
-        return self.GROUP_ID + "." + self.ARTIFACT_ID.replace("-", "") + ".modeles.sources"
+        return self.GROUP_ID + "." + self.ARTIFACT_ID.replace("-", "") + ".alfresco.modeles.sources"
 
     def obt_chemin_alfresco_sources_classes(self):
         return self.CHEMIN_PROJET + "/" + self.ARTIFACT_ID + "-platform/src/main/java/" + \
-               self.GROUP_ID.replace(".", "/") + "/" + self.ARTIFACT_ID.replace("-", "") + "/modeles/sources"
+               self.GROUP_ID.replace(".", "/") + "/" + self.ARTIFACT_ID.replace("-", "") + "/alfresco/modeles/sources"
 
     def get_chemin_config_custom_fichier(self):
         """

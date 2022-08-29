@@ -23,7 +23,7 @@ class DonneesControleur(ControleurSecondaire):
         self.MODELE.__class__ = DonneesModele
         self.CONTROLEUR_PRINCIPALE = ctrl_principal
 
-    def controler(self, chemin_projet: str):
+    def extraire(self, chemin_projet: str):
         self.VUE.titre("CHARGEMENT DES DONNEES DU PROJET")
 
         self.VUE.info("Chargement du fichier 'boostrap-context.xml' du sous-projet 'platform'.")
@@ -56,11 +56,11 @@ class DonneesControleur(ControleurSecondaire):
         :param uri: L'URI XMLNS définit dans le fichier XML.
         """
 
-        aspects = racine.find(".//" + xmlns + "types")
+        genres = racine.find(".//" + xmlns + "types")
 
-        if aspects is not None:
-            for aspect in aspects.findall(xmlns + "type"):
-                self.CONTROLEUR_PRINCIPALE.ajt_type(self.__charger_modele__(xmlns, uri, aspects, aspect))
+        if genres is not None:
+            for genre in genres.findall(xmlns + "type"):
+                self.CONTROLEUR_PRINCIPALE.ajt_type(self.__charger_modele__(xmlns, uri, genres, genre, "type"))
 
     def __charger_aspects__(self, racine: Element, xmlns: str, uri: str):
         """
@@ -74,15 +74,16 @@ class DonneesControleur(ControleurSecondaire):
 
         if aspects is not None:
             for aspect in aspects.findall(xmlns + "aspect"):
-                self.CONTROLEUR_PRINCIPALE.ajt_aspect(self.__charger_modele__(xmlns, uri, aspects, aspect))
+                self.CONTROLEUR_PRINCIPALE.ajt_aspect(self.__charger_modele__(xmlns, uri, aspects, aspect, "aspect"))
 
-    def __charger_modele__(self, xmlns: str, uri: str, parent: Element, noeud_modele: Element) -> Modele:
+    def __charger_modele__(self, xmlns: str, uri: str, parent: Element, noeud_modele: Element, genre: str) -> Modele:
         """
         Permet de charger un aspect ou un type d'un fichier XML.
         :param xmlns: Le xmlns indiqué dans le fichier XML.
         :param uri: L'URI indiqué dans le fichier XML.
         :param parent: Le parent du modèle.
         :param noeud_modele: Le noeud dans lequel extraire les données.
+        :param genre: Le genre du noeud (type ou aspect).
         :return:
         """
         nom: str = noeud_modele.attrib["name"]
@@ -92,24 +93,30 @@ class DonneesControleur(ControleurSecondaire):
 
         modele.maj_nom(nom)
         modele.maj_uri(uri)
-        modele.maj_parent(self.__obt_parent__(xmlns, noeud_modele))
+        modele.maj_parent(self.__obt_parent__(xmlns, noeud_modele, genre))
         modele.ajt_proprietes(self.__charger_proprietes__(xmlns, noeud_modele))
         modele.maj_description(self.charger_description(noeud_modele.find(xmlns + "description")))
-        modele.ajt_proprietes(self.__charger_proprietes_parent__(xmlns, uri, parent, noeud_modele))
-        modele.ajt_proprietes(self.__charger_proprietes_mandatory__(xmlns, uri, parent, noeud_modele))
+        modele.ajt_proprietes(self.__charger_proprietes_parent__(xmlns, uri, parent, noeud_modele, genre))
+        modele.ajt_proprietes(self.__charger_proprietes_mandatory__(xmlns, uri, parent, noeud_modele, "aspect"))
 
         return modele
 
-    def __obt_parent__(self, xmlns: str, noeud: Element) -> str:
+    def __obt_parent__(self, xmlns: str, noeud: Element, genre: str) -> str:
+        """
+        Méthode permettant de récupérer parent d'un modèle de contenu.
+        :param xmlns: Le xmlns du XML.
+        :param noeud: Le noeud dont on souhaite récupérer le xmlns.
+        :return: La valeur du noeud 'parent'.
+        """
         noeud_parent = noeud.find(xmlns + "parent")
         if noeud_parent is None:
             return "cm:content"
         else:
-            self.obt_noeud_ancetre(noeud_parent.text)
+            self.obt_noeud_ancetre(noeud_parent.text, genre)
 
         return noeud_parent.text
 
-    def obt_noeud_ancetre(self, nom_noeud: str) -> str | None:
+    def obt_noeud_ancetre(self, nom_noeud: str, genre: str) -> str | None:
         """
         Méthode permettant de récupérer le modèle d'origine d'un noeud.
         :param nom_noeud: Le noeud dont on souhaite connaitre l'origine.
@@ -118,28 +125,36 @@ class DonneesControleur(ControleurSecondaire):
         if nom_noeud.__eq__("cm:folder") or nom_noeud.__eq__("cm:content"):
             return nom_noeud
 
-        modeles = self.CONTROLEUR_PRINCIPALE.obt_aspects()
+        if genre.__eq__("aspect"):
+            modeles = self.CONTROLEUR_PRINCIPALE.obt_aspects()
+        elif genre.__eq__("type"):
+            modeles = self.CONTROLEUR_PRINCIPALE.obt_types()
+
         if nom_noeud in modeles.keys():
-            return self.obt_noeud_ancetre(modeles[nom_noeud].PARENT)
+            return self.obt_noeud_ancetre(modeles[nom_noeud].PARENT, genre)
 
         return None
 
-    def __charger_proprietes_parent__(self, xmlns: str, uri: str, parent: Element, noeud: Element) -> list[Propriete]:
+    def __charger_proprietes_parent__(self, xmlns: str, uri: str, parent: Element, noeud: Element, genre: str) \
+            -> list[Propriete]:
         """
         Charge les propriétés de l'élément désigné comme parent.
         :param xmlns: L'"xmlns" du fichier xml du fichier XML.
         :param uri:
         :param parent: Le noeud parent du noeud auquel on extrait les données.
         :param noeud: Le noeud auquel on extrait les données.
+        :param genre: Le genre noeud (aspect ou type).
         :return: La liste des propriétés.
         """
+        self.VUE.info("Récupération des propriétés parents de " + noeud.attrib["name"])
         noeud_parent = noeud.find(xmlns + "parent")
         if noeud_parent is None or noeud_parent.text.__eq__("cm:folder") or noeud_parent.text.__eq__("cm:content"):
             return []
 
-        return self.obt_proprietes_aspect(xmlns, uri, parent, noeud_parent.text)
+        self.VUE.info("Récupération des propriétés parents de " + noeud.attrib["name"])
+        return self.obt_proprietes_aspect(xmlns, uri, parent, noeud_parent.text, genre)
 
-    def __charger_proprietes_mandatory__(self, xmlns: str, uri: str, parent: Element, noeud: Element) \
+    def __charger_proprietes_mandatory__(self, xmlns: str, uri: str, parent: Element, noeud: Element, genre: str) \
             -> list[Propriete]:
         """
         Charge les propriétés des d'un élément obligatoire.
@@ -147,6 +162,7 @@ class DonneesControleur(ControleurSecondaire):
         :param uri:
         :param parent: Le noeud parent du noeud auquel on extrait les données.
         :param noeud: Le noeud auquel on extrait les données.
+        :param genre: Le genre noeud (aspect ou type).
         :return: La liste des propriétés.
         """
         noeuds_mandatory: Element = noeud.find(xmlns + "mandatory-aspects")
@@ -154,29 +170,42 @@ class DonneesControleur(ControleurSecondaire):
             return []
 
         proprietes: list[Propriete] = []
-        for noeud_mandatory in noeuds_mandatory.findall(xmlns + "aspects"):
-            print(parent. noeud_mandatory.text)
-            proprietes += self.obt_proprietes_aspect(xmlns, uri, parent, noeud_mandatory.text)
+        for noeud_mandatory in noeuds_mandatory.findall(xmlns + "aspect"):
+            proprietes += self.obt_proprietes_aspect(xmlns, uri, parent, noeud_mandatory.text, genre)
 
         return proprietes
 
-    def obt_proprietes_aspect(self, xmlns: str, uri: str, parent: Element, reference: str) -> list[Propriete]:
+    def obt_proprietes_aspect(self, xmlns: str, uri: str, parent: Element, reference: str, genre: str) \
+            -> list[Propriete]:
         """
 
         :param xmlns: L'"xmlns" du fichier xml du fichier XML.
         :param uri:
         :param parent: Le noeud parent du noeud auquel on extrait les données.
         :param reference: La référence au noeud.
+        :param genre: Le genre noeud (aspect ou type).
         :return: La liste des propriétés.
         """
         if reference.__eq__("cm:folder") or reference.__eq__("cm:content"):
             return []
 
-        modele: Modele = self.CONTROLEUR_PRINCIPALE.obt_aspect(reference)
+        if genre.__eq__("aspect"):
+            modele: Modele = self.CONTROLEUR_PRINCIPALE.obt_aspect(reference)
+        elif genre.__eq__("type"):
+            modele: Modele = self.CONTROLEUR_PRINCIPALE.obt_type(reference)
+
         if modele is None:
-            self.__charger_modele__(xmlns, uri, parent, parent.find(xmlns + "typecontenu[@name='" + reference + "']"))
-            modele = self.CONTROLEUR_PRINCIPALE.obt_aspect(reference)
-            print(modele)
+            print(xmlns + genre + "[@name='" + reference + "']")
+            print(parent.find(xmlns + genre + "[@name='" + reference + "']"))
+
+            self.__charger_modele__(
+                xmlns, uri, parent, parent.find(xmlns + genre + "[@name='" + reference + "']"),
+                genre
+            )
+            if genre.__eq__("aspect"):
+                modele = self.CONTROLEUR_PRINCIPALE.obt_aspect(reference)
+            elif genre.__eq__("type"):
+                modele = self.CONTROLEUR_PRINCIPALE.obt_type(reference)
 
         return modele.obt_proprietes()
 

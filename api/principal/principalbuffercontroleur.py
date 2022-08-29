@@ -72,3 +72,20 @@ class PrincipalBufferControleur(ControleurGenerale, ABC):
         :return: Un dictionnaire des aspects du projet.
         """
         pass
+
+    @abstractmethod
+    def obt_types(self):
+        """
+        Méthode permettant de récupérer les types du projet.
+        :return: Un dictionnaire des aspects du projet.
+        """
+        pass
+
+    @abstractmethod
+    def obt_type(self, reference):
+        """
+        Méthode permettant de récupérer un type grâce à sa référence.
+        :param reference: La référence dont on souhaite récupérer le type.
+        :return: Le type référencé par la référence ou None.
+        """
+        pass

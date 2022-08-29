@@ -35,7 +35,7 @@ class ActionModele(ModeleGenerale):
         :return : Une chaîne de caractère représentant le chemin vers le dossier contenant les classes d'actions.
         """
         return self.CHEMIN_PROJET + "/" + self.ARTIFACT_ID + "-platform/src/main/java/" + \
-               self.GROUP_ID.replace(".", "/") + "/" + self.ARTIFACT_ID.replace("-", "") + "/actions"
+               self.GROUP_ID.replace(".", "/") + "/" + self.ARTIFACT_ID.replace("-", "") + "/alfresco/actions"
 
     def obt_chemin_fichier_modele(self):
         return self.CHEMIN_DOSSIER_RESOURCE + "/alfrescoactions.xml.sauv"
@@ -48,5 +48,9 @@ class ActionModele(ModeleGenerale):
         self.__ACTIONS__.append(action)
 
     def obt_chemin_fichier_module_context(self):
+        """
+        Méthode permettant de récupérer le chemin vers le fichier module du context.
+        :return: Le chemin vers le fichier module du context.
+        """
         return self.CHEMIN_PROJET + "/" + self.ARTIFACT_ID + "-platform/src/main/resources/alfresco/module/" + \
                self.ARTIFACT_ID + "-platform/module-context.xml"
